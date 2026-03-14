@@ -1,0 +1,140 @@
+<?php
+
+namespace Database\Seeders;
+
+use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class PutovanjaSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        DB::table('putovanjas')->insert([
+            [
+                'naziv' => 'Jadransko letovanje',
+                'id_drzave' => '33',
+                'grad' => 'Budva',
+                'mesto_polaska' => 'Beograd',
+                'datum_od' => Carbon::parse('2025-07-01'),
+                'datum_do' => Carbon::parse('2025-07-10'),
+                'broj_dana' => 10,
+                'broj_nocenja' => 9,
+                'broj_dostupnih_mesta' => 30,
+                'cena' => 350.00,
+                'id_hotela' => '1',
+                'id_tip_prevoza' => 1,
+                'prevoznik' => 'Autoprevoz Beograd',
+                'program_putovanja' => 'Dan 1: Polazak, Dan 2-9: Plaža i izleti, Dan 10: Povratak',
+                'fakultativni_izleti' => 'Ostrvo Sveti Stefan, Nacionalni park Lovćen',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'naziv' => 'Avionsko putovanje u Pariz',
+                'id_drzave' => '16',
+                'grad' => 'Pariz',
+                'mesto_polaska' => 'Beograd',
+                'datum_od' => Carbon::parse('2025-09-15'),
+                'datum_do' => Carbon::parse('2025-09-22'),
+                'broj_dana' => 8,
+                'broj_nocenja' => 7,
+                'broj_dostupnih_mesta' => 20,
+                'cena' => 850.00,
+                'id_hotela' => '3',
+                'id_tip_prevoza' => 2,
+                'prevoznik' => 'Air Serbia',
+                'program_putovanja' => 'Dan 1: Dolazak, Dan 2-7: Razgledanje, Dan 8: Povratak',
+                'fakultativni_izleti' => 'Luvr, Ajfelov toranj, Versaj',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'naziv' => 'Planinski odmor',
+                'id_drzave' => '42',
+                'grad' => 'Kopaonik',
+                'mesto_polaska' => 'Niš',
+                'datum_od' => Carbon::parse('2025-12-20'),
+                'datum_do' => Carbon::parse('2025-12-27'),
+                'broj_dana' => 8,
+                'broj_nocenja' => 7,
+                'broj_dostupnih_mesta' => 15,
+                'cena' => 450.00,
+                'id_hotela' => '5',
+                'id_tip_prevoza' => 1,
+                'prevoznik' => 'Planinski prevoz',
+                'program_putovanja' => 'Dan 1: Dolazak, Dan 2-7: Skijanje i wellness, Dan 8: Povratak',
+                'fakultativni_izleti' => 'Ski škola, Noćno sankanje',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'naziv' => 'Egzotična tura u Grčku',
+                'id_drzave' => '19',
+                'grad' => 'Atina',
+                'mesto_polaska' => 'Beograd',
+                'datum_od' => Carbon::parse('2025-10-05'),
+                'datum_do' => Carbon::parse('2025-10-12'),
+                'broj_dana' => 8,
+                'broj_nocenja' => 7,
+                'broj_dostupnih_mesta' => 25,
+                'cena' => 950.00,
+                'id_hotela' => '7',
+                'id_tip_prevoza' => 2, // avion
+                'prevoznik' => 'Aegean Airlines',
+                'program_putovanja' => 'Dan 1: Dolazak, Dan 2-6: Razgledanje, Dan 7-8: Povratak',
+                'fakultativni_izleti' => 'Akropolj, Plaka, Santorini izlet',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'naziv' => 'Jadransko krstarenje',
+                'id_drzave' => '10',
+                'grad' => 'Dubrovnik',
+                'mesto_polaska' => 'Split',
+                'datum_od' => Carbon::parse('2025-08-10'),
+                'datum_do' => Carbon::parse('2025-08-17'),
+                'broj_dana' => 8,
+                'broj_nocenja' => 7,
+                'broj_dostupnih_mesta' => 40,
+                'cena' => 700.00,
+                'id_hotela' => '9',
+                'id_tip_prevoza' => 1,
+                'prevoznik' => 'Jadranski prevoznik',
+                'program_putovanja' => 'Dan 1: Polazak i ukrcaj, Dan 2-6: Obilasci luka, Dan 7-8: Povratak',
+                'fakultativni_izleti' => 'Mljet, Korčula, Hvar',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'naziv' => 'Zimski ski vikend u Austriji',
+                'id_drzave' => '4',
+                'grad' => 'Innsbruck',
+                'mesto_polaska' => 'Novi Sad',
+                'datum_od' => Carbon::parse('2025-01-10'),
+                'datum_do' => Carbon::parse('2025-01-15'),
+                'broj_dana' => 6,
+                'broj_nocenja' => 5,
+                'broj_dostupnih_mesta' => 18,
+                'cena' => 600.00,
+                'id_hotela' => '11',
+                'id_tip_prevoza' => 1,
+                'prevoznik' => 'Europrevoz',
+                'program_putovanja' => 'Dan 1: Polazak, Dan 2-5: Skijanje i wellness, Dan 6: Povratak',
+                'fakultativni_izleti' => 'Nordic ski, Snowboard park',
+                'broj_rezervacija' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+    }
+}

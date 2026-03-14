@@ -1,0 +1,182 @@
+.login-input {
+  background-color: #1a5f7f0d;
+  border-color: #1a5f7f !important;
+  transition: all .3s ease;
+  box-shadow: none;
+  color: #898989;
+  font-size: 1rem;
+  padding: 12px 10px;
+}
+
+.form-label {
+    display: inline-block;
+    font-size: 14px;
+    letter-spacing: .4px;
+    padding-bottom: 4px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.5;
+}
+.form-control::placeholder {
+  color: #898989 !important;
+  font-weight: 300 !important;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: var(--primary);
+  outline: 0;
+}
+
+.form-checbox-label {
+  font-size: 1rem;
+  letter-spacing: .4px;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  padding-left: 16px;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+  gap: 10px;
+  align-self: stretch;
+  align-items: flex-start;
+}
+/* custom klasa za Tabele, Sašino... */
+.flex-center {
+  display: flex;
+  gap: 10px;
+  align-self: stretch;
+  align-items: center;
+}
+/*  */
+
+.form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+input:hover {
+  border: 1px solid #b9c1cc;
+  border-top-color: rgb(185, 193, 204);
+  border-right-color: rgb(185, 193, 204);
+  border-bottom-color: rgb(185, 193, 204);
+  border-left-color: rgb(185, 193, 204);
+  box-shadow: none !important;
+  transition: all .3s ease;
+}
+
+form input:focus,
+.login-card .login-main .theme-form input:hover {
+  border: 1px solid #b9c1cc;
+  border-top-color: rgb(185, 193, 204);
+  border-right-color: rgb(185, 193, 204);
+  border-bottom-color: rgb(185, 193, 204);
+  border-left-color: rgb(185, 193, 204);
+  box-shadow: none !important;
+  transition: all .3s ease;
+}
+
+
+.form-control,
+select,
+.select2-container--bootstrap4 .select2-selection,
+.select2-container--bootstrap-5 {
+  background-color: var(--white) !important;
+  /* height: 35px !important; */
+  line-height: 20px;
+}
+
+.form-control:focus,
+select:focus,
+.select2-container--bootstrap4.select2-container--focus .select2-selection,
+.select2-container--bootstrap4.select2-container--focus .select2-selection {
+  border: 1px solid var(--primary) !important;
+  box-shadow: none !important;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+
+/* Hide the default checkbox */
+input[type=checkbox] {
+  visibility: hidden;
+}
+
+/* Creating a custom checkbox
+  based on demand */
+.custom-check {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: var(--white);
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+/* Specify the background color to be
+  shown when hovering over checkbox */
+.form-checkbox:hover input~.custom-check {
+  background-color: #23789e !important;
+  border: 1px solid #23789e !important
+}
+
+/* Specify the background color to be
+  shown when checkbox is active */
+.form-checkbox input:active~.custom-check {
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+/* Specify the background color to be
+  shown when checkbox is checked */
+.form-checkbox input:checked~.custom-check {
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+/* Checkmark to be shown in checkbox */
+/* It is not be shown when not checked */
+.custom-check:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Display checkmark when checked */
+.form-checkbox input:checked~.custom-check:after {
+  display: block;
+}
+
+.form-checkbox .custom-check:after {
+  left: 8px;
+  bottom: 7px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--white);
+  border-width: 0px 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.form-checbox-label {
+  font-weight: 400;
+  color: var(--dark-text);
+  margin-bottom: 0;
+  margin-left: 0px;
+}

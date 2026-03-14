@@ -1,0 +1,128 @@
+/* SIDEBAR */
+#body-row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#sidebar-container {
+    min-height: 100vh;
+    background-color: var(--primary);
+}
+
+/* Widths */
+.sidebar-expanded {
+    width: 230px;
+}
+.sidebar-collapsed {
+    width: 100px;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    width: 100%;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 15px;
+    color: var(--white);
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+.sidebar-link:hover {
+    background-color: var(--primary-hover); /* hover boja */
+    color: var(--white);
+}
+
+/* Icons inside sidebar links */
+.sidebar-icon {
+    margin-right: 10px;
+}
+
+/* Text inside links */
+.sidebar-text {
+  font-size: 16px;
+    flex: 1;
+}
+
+/* Submenu */
+.sidebar-submenu {
+    list-style: none;
+    padding-left: 20px;
+    display: none; /* initially hidden, jQuery will toggle */
+}
+
+.sidebar-submenu .sidebar-link {
+    height: 45px;
+    padding-left: 30px;
+    font-size: 16px;
+}
+
+/* Separators */
+.sidebar-separator-title,
+.sidebar-separator,
+.logo-separator {
+    background-color: var(--primary);
+}
+
+.sidebar-separator-title {
+    height: 35px;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.sidebar-separator {
+    height: 25px;
+}
+
+.logo-separator {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Collapse button */
+.sidebar-collapse .sidebar-link {
+    justify-content: center;
+}
+
+/* Badge */
+.sidebar-link .badge {
+    background-color: var(--yellow);
+    color: var(--white);
+    font-size: 0.75rem;
+    margin-left: 5px;
+}
+/* Active menu item */
+.sidebar-item.active > .sidebar-link {
+    background-color: var(--primary-hover); /* malo tamnija od 535a3b */
+    color: var(--white);
+}
+
+/* Optional: active submenu item */
+.sidebar-submenu .sidebar-item.active > .sidebar-link {
+    background-color: var(--primary-hover);
+}
+
+/* Submenu arrow - stalno desno */
+.submenu-arrow {
+    margin-left: auto;
+}
+
+/* Optional: rotate arrow only when submenu is open */
+.sidebar-item.has-submenu.open > .sidebar-link .submenu-arrow {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+}

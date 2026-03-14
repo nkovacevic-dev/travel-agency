@@ -1,0 +1,60 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="auth-container">
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <div class="logo-placeholder mb-3">
+                <!-- Ovde može logo -->
+            </div>
+            <h3>{{ __('Reset Password') }}</h3>
+            <p class="text-muted">
+                {{ __('Unesite svoju novu lozinku kako biste resetovali postojeću.') }}
+            </p>
+        </div>
+
+        <form method="POST" action="{{ route('password.update') }}">
+            @csrf
+            <input type="hidden" name="token" value="{{ $token }}">
+
+            <div class="mb-3">
+                <label class="form-label">{{ __('Elektronska pošta') }}</label>
+                <input id="email" type="email"
+                       class="form-control @error('email') is-invalid @enderror"
+                       name="email" value="{{ $email ?? old('email') }}"
+                       autocomplete="email" autofocus>
+                @error('email')
+                <small class="invalid-feedback d-block">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{{ __('Nova lozinka') }}</label>
+                <input id="password" type="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       name="password" required autocomplete="new-password">
+                @error('password')
+                <small class="invalid-feedback d-block">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{{ __('Potvrdi lozinku') }}</label>
+                <input id="password-confirm" type="password"
+                       class="form-control"
+                       name="password_confirmation" required autocomplete="new-password">
+            </div>
+
+            <button class="w-100 btn btn-primary" type="submit">
+                {{ __('Reset Password') }}
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ route('login') }}" class="text-muted">
+                {{ __('Nazad na prijavu') }}
+            </a>
+        </div>
+    </div>
+</div>
+@endsection
