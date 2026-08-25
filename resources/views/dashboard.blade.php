@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
                                 Rezervacije (ovaj mesec)
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $rezervacije_mesec }}</div>
@@ -83,7 +83,7 @@
         <div class="col-xl-8 col-lg-7 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Rezervacije po mesecima</h6>
+                    <h6 class="m-0 font-weight-bold">Rezervacije po mesecima</h6>
                 </div>
                 <div class="card-body">
                     <canvas id="rezervacijeChart"></canvas>
@@ -95,7 +95,7 @@
         <div class="col-xl-4 col-lg-5 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Status rezervacija</h6>
+                    <h6 class="m-0 font-weight-bold">Status rezervacija</h6>
                 </div>
                 <div class="card-body">
                     <canvas id="statusChart"></canvas>
@@ -109,7 +109,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Top 5 destinacija</h6>
+                    <h6 class="m-0 font-weight-bold">Top 5 destinacija</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -140,7 +140,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Nedavne rezervacije</h6>
+                    <h6 class="m-0 font-weight-bold">Nedavne rezervacije</h6>
                     <a href="{{ route('rezervacije.index') }}" class="btn btn-sm button-primary">Sve rezervacije</a>
                 </div>
                 <div class="card-body">

@@ -14,6 +14,11 @@ class HotelController extends Controller
      * Display a listing of the resource.
      */
 
+    public function poDrzavi(string $id)
+    {
+        return Hotel::where('id_drzave', $id)->get()->map(fn($h) => ['id' => $h->id, 'text' => $h->naziv]);
+    }
+
     public function tabela()
     {
         $hoteli = Hotel::select('hotels.*', 'drzavas.naziv as naziv_drzave')

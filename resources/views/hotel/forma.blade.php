@@ -50,10 +50,10 @@
             
             <div class="mt-3">
                 <button type="submit" class="btn button-primary">
-                    <i class="fa fa-save"></i> {{ __('Sačuvaj') }}
+                     {{ __('Sačuvaj') }}
                 </button>
                 <a href="{{ route('hoteli.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-times"></i> {{ __('Otkaži') }}
+                    <i class="fa fa-times"></i> {{ __('Nazad') }}
                 </a>
             </div>
         </form>

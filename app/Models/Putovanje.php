@@ -14,11 +14,8 @@ class Putovanje extends Model
         'id_drzave',
         'grad',
         'mesto_polaska',
-        'datum_od',
-        'datum_do',
         'broj_dana',
         'broj_nocenja',
-        'broj_dostupnih_mesta',
         'cena',
         'id_hotela',
         'id_tip_sobe',
@@ -33,11 +30,8 @@ class Putovanje extends Model
     ];
 
     protected $casts = [
-        'datum_od' => 'date',
-        'datum_do' => 'date',
         'broj_dana' => 'integer',
         'broj_nocenja' => 'integer',
-        'broj_dostupnih_mesta' => 'integer',
         'broj_rezervacija' => 'integer',
         'cena' => 'decimal:2',
         'galerija_slika' => 'array',
@@ -62,6 +56,11 @@ class Putovanje extends Model
     public function tipPrevoza()
     {
         return $this->belongsTo(TipPrevoza::class, 'id_tip_prevoza');
+    }
+
+    public function termini()
+    {
+        return $this->hasMany(Termin::class, 'id_putovanja')->orderBy('datum_od');
     }
 
     public function rezervacije()

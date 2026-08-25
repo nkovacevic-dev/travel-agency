@@ -2,14 +2,12 @@
 
 @section('content')
 <div class="card">
-    <div class="card-body d-flex justify-content-between align-items-center">
+     <div class="card-header d-flex justify-content-between align-items-center">
         <h4>Lista putovanja</h4>
         <a href="{{ route('putovanja.create') }}" class="btn button-primary">
-         Dodaj
+            <i class="fa fa-plus"></i> Dodaj
         </a>
     </div>
-</div>
-<div class="card">
     <div class="card-body">
         <table id="datatable_putovanja" class="table" style="width: 100%" data-url="{{ route('putovanja.datatable')}}">
             <thead>
@@ -19,8 +17,7 @@
                     <th>Država</th>
                     <th>Grad</th>
                     <th>Cena (EUR)</th>
-                    <th>Datum početka</th>
-                    <th>Datum zavrsetka</th>
+                    <th>Termini</th>
                     <th>Rezervacije</th>
                     <th>Akcije</th>
                 </tr>

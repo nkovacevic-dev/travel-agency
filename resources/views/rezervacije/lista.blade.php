@@ -5,7 +5,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4>Lista rezervacija</h4>
         <a href="{{ route('rezervacije.create') }}" class="btn button-primary">
-            <i class="fa fa-plus"></i> Nova rezervacija
+            <i class="fa fa-plus"></i> Dodaj
         </a>
     </div>
     <div class="card-body">

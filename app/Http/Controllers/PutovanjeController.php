@@ -8,7 +8,9 @@ use App\Models\Hotel;
 use App\Models\Putovanje;
 use App\Models\TipPrevoza;
 use App\Models\TipSobe;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PutovanjeController extends Controller
 {
@@ -18,14 +20,15 @@ class PutovanjeController extends Controller
 
     public function tabela()
     {
-        $query = \DB::table('putovanjas')
+        $query = Putovanje::with('termini')
             ->select('putovanjas.*', 'drzavas.naziv as naziv_drzave', 'tip_prevozas.naziv as naziv_prevoza')
             ->leftJoin('drzavas', 'drzavas.id', 'putovanjas.id_drzave')
             ->leftJoin('tip_prevozas', 'tip_prevozas.id', 'putovanjas.id_tip_prevoza');
 
         return datatables()->of($query)
+            ->addColumn('termini', 'putovanje.dt.kolona_termini')
             ->addColumn('akcija', 'putovanje.dt.kolona_akcije')
-            ->rawColumns(['akcija'])
+            ->rawColumns(['termini', 'akcija'])
             ->make(true);
     }
 
@@ -53,7 +56,8 @@ class PutovanjeController extends Controller
         $tip_prevoza = TipPrevoza::all()->map(function ($item) {
             return ['id' => $item->id, 'text' => $item->naziv];
         });
-        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza'));
+        $termini = [];
+        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza', 'termini'));
     }
 
     /**
@@ -63,7 +67,14 @@ class PutovanjeController extends Controller
     {
         try {
             DB::beginTransaction();
-            $putovanje = Putovanje::create($request->all());
+            $putovanje = Putovanje::create($request->except('termini'));
+            foreach ($request->input('termini', []) as $termin) {
+                $putovanje->termini()->create([
+                    'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
+                    'datum_do' => Carbon::createFromFormat('d.m.Y.', $termin['datum_do']),
+                    'broj_dostupnih_mesta' => $termin['broj_dostupnih_mesta'],
+                ]);
+            }
             DB::commit();
             return redirect()->route('putovanja.index')->with('success', __('Putovanje je uspešno uneto!'));
         } catch (\Exception $e) {
@@ -106,7 +117,13 @@ class PutovanjeController extends Controller
             return ['id' => $item->id, 'text' => $item->naziv];
         });
         
-        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza'));
+        $termini = $putovanje->termini->map(fn($t) => [
+            'datum_od' => $t->datum_od->format('d.m.Y.'),
+            'datum_do' => $t->datum_do->format('d.m.Y.'),
+            'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
+        ])->toArray();
+
+        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza', 'termini'));
     }
 
     /**
@@ -117,7 +134,15 @@ class PutovanjeController extends Controller
         try {
             DB::beginTransaction();
             $putovanje = Putovanje::findOrFail($id);
-            $putovanje->update($request->all());
+            $putovanje->update($request->except('termini'));
+            $putovanje->termini()->delete();
+            foreach ($request->input('termini', []) as $termin) {
+                $putovanje->termini()->create([
+                    'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
+                    'datum_do' => Carbon::createFromFormat('d.m.Y.', $termin['datum_do']),
+                    'broj_dostupnih_mesta' => $termin['broj_dostupnih_mesta'],
+                ]);
+            }
             DB::commit();
             return redirect()->route('putovanja.index')->with('success', __('Putovanje je uspešno ažurirano!'));
         } catch (\Exception $e) {

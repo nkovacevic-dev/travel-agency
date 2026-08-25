@@ -40,7 +40,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="main-container p-3">
+                        <div class="main-container">
                             <div class="container" id="message">
                                 @include('includes.message_alert')
                             </div>

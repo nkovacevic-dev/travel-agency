@@ -47,12 +47,10 @@ $("#datatable_putovanja").DataTable({
             name: "putovanjas.cena",
         },
         {
-            data: "datum_od",
-            name: "putovanjas.datum_od",
-        },
-        {
-            data: "datum_do",
-            name: "putovanjas.datum_do",
+            data: "termini",
+            name: "termini",
+            orderable: false,
+            searchable: false,
         },
         {
             data: "broj_rezervacija",
@@ -66,17 +64,7 @@ $("#datatable_putovanja").DataTable({
             searchable : false
         }
     ],
-    columnDefs: [
-        {
-            targets: [5, 6],
-            render: function (data, type, row, meta) {
-                var ThisDate = moment(new Date(data)).format(
-                    "DD.MM.YYYY."
-                );
-                return ThisDate;
-            },
-        },
-    ],
+    columnDefs: [],
     order: [[0, "asc"]],
     initComplete: function (settings, json) {
     

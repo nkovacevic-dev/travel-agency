@@ -12,7 +12,7 @@ class Rezervacije extends Model
     protected $fillable = [
         'puno_ime',
         'telefon',
-        'termin',
+        'id_termina',
         'broj_odraslih',
         'broj_dece',
         'email',
@@ -34,6 +34,11 @@ class Rezervacije extends Model
     public function putovanje()
     {
         return $this->belongsTo(Putovanje::class, 'id_putovanja');
+    }
+
+    public function termin()
+    {
+        return $this->belongsTo(Termin::class, 'id_termina');
     }
 
     public function hotel()

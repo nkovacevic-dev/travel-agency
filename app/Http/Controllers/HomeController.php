@@ -43,8 +43,8 @@ class HomeController extends Controller
             ->where('status', '!=', 'otkazana')
             ->sum('ukupna_cena');
 
-        // Aktivna putovanja (u budućnosti)
-        $aktivna_putovanja = Putovanje::where('datum_od', '>=', now())->count();
+        // Aktivna putovanja (ima bar jedan termin u budućnosti)
+        $aktivna_putovanja = Putovanje::whereHas('termini', fn($q) => $q->where('datum_od', '>=', now()))->count();
 
         // Ukupno putnika (broj odraslih + dece)
         $ukupno_putnika = Rezervacije::where('status', '!=', 'otkazana')
