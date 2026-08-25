@@ -60,6 +60,9 @@ html {
     margin-bottom: 25px;
 }
 
+.logo-pocetna {
+    height: 100px;
+}
 .card {
     border: none;
     border-radius: 10px;

@@ -3,7 +3,7 @@
 
 @include('includes.navbar')
 
-<section class="py-5">
+<section class="py-5" id="putovanja">
     <div class="container">
         <h2 class="mb-4">Putovanja</h2>
 
