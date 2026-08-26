@@ -93,3 +93,24 @@ Breadcrumbs::for('ponuda.show', function ($trail, $id) {
     $trail->push(__('Prikaz ponude'), route('ponuda.show', $id));
 });
 
+Breadcrumbs::for('korisnici.index', function ($trail) {
+    $trail->parent('pocetna');
+    $trail->push(__('Korisnici'), route('korisnici.index'));
+});
+
+Breadcrumbs::for('korisnici.create', function ($trail) {
+    $trail->parent('korisnici.index');
+    $trail->push(__('Unos korisnika'), route('korisnici.create'));
+});
+
+Breadcrumbs::for('korisnici.edit', function ($trail,$id) {
+    $trail->parent('korisnici.index');
+    $trail->push(__('Izmena korisnika'), route('korisnici.edit', $id));
+});
+
+Breadcrumbs::for('korisnici.show', function ($trail, $id) {
+    $trail->parent('korisnici.index');
+    $trail->push(__('Prikaz korisnika'), route('korisnici.show', $id));
+});
+
+

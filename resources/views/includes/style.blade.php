@@ -7,11 +7,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 <link rel="stylesheet" href="{{ asset('css/global.css') }}">
-<link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-<link rel="stylesheet" href="{{ asset('css/fields.css') }}">
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+<link rel="stylesheet" href="{{ asset('css/components.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages.css') }}">
 <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
 
 <!-- DataTables Bundle CSS -->

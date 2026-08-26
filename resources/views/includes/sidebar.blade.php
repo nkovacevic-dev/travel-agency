@@ -26,22 +26,26 @@
          </ul>
      </li>
      <li class="sidebar-item has-submenu">
-         <a href="#submenu2" class="sidebar-link">
+         <a href="#submenu3" class="sidebar-link">
              <span class="sidebar-icon fa fa-bed"></span>
              <span class="sidebar-text">Hoteli</span>
              <span class="submenu-arrow fa fa-angle-down"></span>
          </a>
-         <ul id="submenu2" class="sidebar-submenu">
+         <ul id="submenu3" class="sidebar-submenu">
              <li><a href="{{ route('hoteli.create') }}" class="sidebar-link">Unos</a></li>
              <li><a href="{{ route('hoteli.index') }}" class="sidebar-link">Lista</a></li>
          </ul>
      </li>
 
-     <li class="sidebar-item">
-         <a href="#" class="sidebar-link">
+     <li class="sidebar-item has-submenu">
+         <a href="#submenu4" class="sidebar-link">
              <span class="sidebar-icon fa fa-users"></span>
              <span class="sidebar-text">Korisnici</span>
          </a>
+         <ul id="submenu4" class="sidebar-submenu">
+             <li><a href="{{ route('korisnici.create') }}" class="sidebar-link">Unos</a></li>
+             <li><a href="{{ route('korisnici.index') }}" class="sidebar-link">Lista</a></li>
+         </ul>
      </li>
 
      <li class="sidebar-item sidebar-collapse">

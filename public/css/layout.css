@@ -1,4 +1,27 @@
-/* SIDEBAR */
+/* ===== Layout ===== */
+.main-container {
+    background-color: #f9f8f8;
+    padding: 30px 25px !important;
+}
+
+.page-header {
+    padding: 20px;
+    background-color: var(--white);
+    box-shadow: 0 1px 20px #2720781a;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.logo-pocetna {
+    height: 100px;
+}
+
+
+/* ===== Sidebar ===== */
 #body-row {
     margin-left: 0;
     margin-right: 0;
@@ -9,15 +32,14 @@
     background-color: var(--primary);
 }
 
-/* Widths */
 .sidebar-expanded {
     width: 230px;
 }
+
 .sidebar-collapsed {
     width: 100px;
 }
 
-/* Sidebar Menu */
 .sidebar-menu {
     list-style: none;
     padding: 0;
@@ -39,22 +61,19 @@
 }
 
 .sidebar-link:hover {
-    background-color: var(--primary-hover); 
+    background-color: var(--primary-hover);
     color: var(--white);
 }
 
-/* Icons inside sidebar links */
 .sidebar-icon {
     margin-right: 10px;
 }
 
-/* Text inside links */
 .sidebar-text {
-  font-size: 16px;
+    font-size: 16px;
     flex: 1;
 }
 
-/* Submenu */
 .sidebar-submenu {
     list-style: none;
     padding-left: 20px;
@@ -67,7 +86,6 @@
     font-size: 16px;
 }
 
-/* Separators */
 .sidebar-separator-title,
 .sidebar-separator,
 .logo-separator {
@@ -93,36 +111,72 @@
     align-items: center;
 }
 
-/* Collapse button */
 .sidebar-collapse .sidebar-link {
     justify-content: center;
 }
 
-/* Badge */
 .sidebar-link .badge {
     background-color: var(--yellow);
     color: var(--white);
     font-size: 0.75rem;
     margin-left: 5px;
 }
-/* Active menu item */
+
 .sidebar-item.active > .sidebar-link {
-    background-color: var(--primary-hover); /* malo tamnija od 535a3b */
+    background-color: var(--primary-hover);
     color: var(--white);
 }
 
-/* Optional: active submenu item */
 .sidebar-submenu .sidebar-item.active > .sidebar-link {
     background-color: var(--primary-hover);
 }
 
-/* Submenu arrow - stalno desno */
 .submenu-arrow {
     margin-left: auto;
 }
 
-/* Optional: rotate arrow only when submenu is open */
 .sidebar-item.has-submenu.open > .sidebar-link .submenu-arrow {
     transform: rotate(180deg);
     transition: transform 0.3s;
+}
+
+
+/* ===== Navbar (admin) ===== */
+@media (max-width: 991px) {
+    .navbar-scroll {
+        background-color: #fff;
+    }
+
+    .navbar-scroll .navbar-brand,
+    .navbar-scroll .nav-link,
+    .navbar-scroll .fa-bars {
+        color: #4f4f4f !important;
+    }
+}
+
+.navbar-brand {
+    letter-spacing: 3px;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.navbar-scroll .navbar-brand,
+.navbar-scroll .nav-link,
+.navbar-scroll .fa-bars {
+    color: #fff;
+}
+
+.navbar-scroll {
+    box-shadow: none;
+}
+
+.navbar-scrolled {
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+}
+
+.navbar-scrolled .navbar-brand,
+.navbar-scrolled .nav-link,
+.navbar-scrolled .fa-bars {
+    color: #4f4f4f;
 }

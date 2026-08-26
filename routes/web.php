@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\KorisnikController;
 use App\Http\Controllers\PutovanjeController;
 use App\Http\Controllers\RezervacijeController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/hoteli/po-drzavi/{id}', [HotelController::class, 'poDrzavi'])->name('hoteli.poDrzavi');
     Route::get('/hoteli/tabela', [HotelController::class, 'tabela'])->name('hoteli.datatable');
     Route::resource('hoteli', HotelController::class)->parameters(['hoteli' => 'id']);
+
+    // Korisnici
+    Route::get('/korisnici/tabela', [KorisnikController::class, 'tabela'])->name('korisnici.datatable');
+    Route::resource('korisnici', KorisnikController::class)->parameters(['korisnici' => 'id']);
 });

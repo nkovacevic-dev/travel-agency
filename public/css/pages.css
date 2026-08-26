@@ -1,0 +1,203 @@
+/* ===== DataTable ===== */
+.dt-paging-button {
+    padding: 0 !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+
+.dt-paging .dt-paging-button {
+    padding: 0 !important;
+}
+
+.dt-paging .dt-paging-button > * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+}
+
+.dt-paging .dt-paging-button.current > *,
+.pagination .page-item.active .page-link {
+    background-color: #B8944F !important;
+    border-color: #B8944F !important;
+    color: var(--white) !important;
+}
+
+.dt-paging .dt-paging-button:not(.disabled):hover > * {
+    background-color: #a07d3e !important;
+    border-color: #a07d3e !important;
+    color: var(--white) !important;
+}
+
+.dt-search input,
+.dt-length select {
+    font-size: 13px !important;
+}
+
+.dt-info {
+    font-size: 13px !important;
+}
+
+.pagination-arrow {
+    color: var(--primary);
+}
+
+.pagination-arrow:hover {
+    color: var(--primary-hover);
+}
+
+
+/* ===== Dashboard ===== */
+.border-left-primary {
+    border-left: 4px solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 4px solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 4px solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 4px solid #f6c23e !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+
+/* ===== Public page ===== */
+@media (max-width: 450px) {
+    #intro {
+        height: 950px !important;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 750px) {
+    #intro {
+        height: 1100px !important;
+    }
+}
+
+@media (min-width: 800px) and (max-width: 990px) {
+    #intro {
+        height: 600px !important;
+    }
+}
+
+.display-1 {
+    font-weight: 500 !important;
+    letter-spacing: 40px;
+}
+
+@media (min-width: 1600px) {
+    .display-1 {
+        font-size: 10rem;
+    }
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+}
+
+.carousel-item {
+    height: 100vh;
+    min-height: 300px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-caption {
+    bottom: 270px;
+}
+
+.carousel-caption h5 {
+    font-size: 45px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 25px;
+}
+
+.carousel-caption p {
+    width: 75%;
+    margin: auto;
+    font-size: 18px;
+    line-height: 1.9;
+}
+
+.navbar-light .navbar-brand {
+    color: #fff;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-link.show,
+.navbar-light .navbar-nav .show > .nav-link {
+    color: #fff;
+}
+
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+.navbar-toggler {
+    background: #fff;
+    padding: 1px 5px;
+    font-size: 18px;
+    line-height: 0.3;
+}
+
+.navbar-nav {
+    text-align: center;
+}
+
+.nav-link {
+    padding: .2rem 1rem;
+}
+
+.nav-link.active,
+.nav-link:focus {
+    color: #fff;
+}
+
+
+/* ===== Misc ===== */
+.link-area {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 15px;
+    border-radius: 40px;
+    background: tomato;
+}
+
+.link-area a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 25px;
+}
