@@ -279,3 +279,41 @@ label {
     color: var(--white) !important;
     margin: 0;
 }
+
+/* DataTable */
+.dt-paging .dt-paging-button {
+    padding: 0 !important;
+}
+
+.dt-paging .dt-paging-button > * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+}
+
+.dt-paging .dt-paging-button.current > * {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--white) !important;
+}
+
+.dt-paging .dt-paging-button:not(.disabled):hover > * {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+    color: var(--white) !important;
+}
+
+.dt-search input,
+.dt-length select {
+    font-size: 13px !important;
+}
+
+.dt-info {
+    font-size: 13px !important;
+}

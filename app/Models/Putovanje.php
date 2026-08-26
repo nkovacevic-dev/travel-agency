@@ -17,7 +17,6 @@ class Putovanje extends Model
         'broj_nocenja',
         'cena',
         'id_hotela',
-        'id_tip_sobe',
         'id_tip_prevoza',
         'prevoznik',
         'program_putovanja',

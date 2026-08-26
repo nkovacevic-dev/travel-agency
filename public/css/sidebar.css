@@ -39,7 +39,7 @@
 }
 
 .sidebar-link:hover {
-    background-color: var(--primary-hover); /* hover boja */
+    background-color: var(--primary-hover); 
     color: var(--white);
 }
 

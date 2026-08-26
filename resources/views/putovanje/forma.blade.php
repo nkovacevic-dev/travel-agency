@@ -59,9 +59,6 @@
                 <div class="col-md-3">
                     <x-input-select label="{{ __('Hotel') }}" name="id_hotela" :items="$hoteli" :value="$putovanje->id_hotela ?? old('id_hotela')" :emptyOption="true" />
                 </div>
-                <div class="col-md-3">
-                    <x-input-select label="{{ __('Tip sobe') }}" name="id_tip_sobe" :items="$tip_sobe" :value="$putovanje->id_tip_sobe ?? old('id_tip_sobe')" :emptyOption="true" />
-                </div>
             </div>
 
             <div class="row">
