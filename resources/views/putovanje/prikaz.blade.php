@@ -31,7 +31,6 @@
                             <p><strong><i class="fa fa-clock-o"></i> Trajanje:</strong> {{ $putovanje->broj_dana }} dana / {{ $putovanje->broj_nocenja }} noćenja</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong><i class="fa fa-map-signs"></i> Polazak iz:</strong> {{ $putovanje->mesto_polaska }}</p>
                             <p><strong><i class="fa fa-bus"></i> Prevoz:</strong> {{ $putovanje->tipPrevoza->naziv ?? 'N/A' }} ({{ $putovanje->prevoznik ?? 'N/A' }})</p>
                             <p><strong><i class="fa fa-users"></i> Dostupna mesta:</strong> {{ $putovanje->broj_dostupnih_mesta }}</p>
                         </div>

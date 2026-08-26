@@ -13,7 +13,6 @@ class Putovanje extends Model
         'naziv',
         'id_drzave',
         'grad',
-        'mesto_polaska',
         'broj_dana',
         'broj_nocenja',
         'cena',

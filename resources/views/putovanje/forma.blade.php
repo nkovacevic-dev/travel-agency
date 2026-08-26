@@ -24,11 +24,11 @@
                 </div>
             </div>
             
-            <div class="row mb-2">
+            <div class="row mb-3">
                 <div class="col-md-12">
-                    <label class="label-select">{{ __('Termini putovanja') }}</label>
+                    <label class="label-select"><b>{{ __('Termini putovanja') }}</b></label>
                     <div id="termini-container"></div>
-                    <button type="button" id="btn-dodaj-termin" class="btn btn-sm btn-outline-primary mt-1">
+                    <button type="button" id="btn-dodaj-termin" class="btn btn-sm button-outline-primary">
                         {{ __('Dodaj termin') }}
                     </button>
                     @error('termini')
@@ -38,9 +38,6 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3">
-                    <x-input-text label="{{ __('Mesto polaska') }}" name="mesto_polaska" :value="$putovanje->mesto_polaska ?? old('mesto_polaska')" :required="true" />
-                </div>
                 <div class="col-md-3">
                     <x-input-text label="{{ __('Cena (EUR)') }}" name="cena" type="number" step="0.01" :value="$putovanje->cena ?? old('cena')" :required="true" />
                 </div>
@@ -53,29 +50,27 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <x-input-select label="{{ __('Tip prevoza') }}" name="id_tip_prevoza" :items="$tip_prevoza" :value="$putovanje->id_tip_prevoza ?? old('id_tip_prevoza')" :required="true" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <x-input-text label="{{ __('Prevoznik') }}" name="prevoznik" :value="$putovanje->prevoznik ?? old('prevoznik')" />
                 </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <x-input-select label="{{ __('Hotel') }}" name="id_hotela" :items="$hoteli" :value="$putovanje->id_hotela ?? old('id_hotela')" :emptyOption="true" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <x-input-select label="{{ __('Tip sobe') }}" name="id_tip_sobe" :items="$tip_sobe" :value="$putovanje->id_tip_sobe ?? old('id_tip_sobe')" :emptyOption="true" />
                 </div>
             </div>
-            
+
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <x-input-textarea label="{{ __('Program putovanja') }}" name="program_putovanja" :value="$putovanje->program_putovanja ?? old('program_putovanja')" rows="5" :required="true" />
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <x-input-textarea label="{{ __('Fakultativni izleti') }}" name="fakultativni_izleti" :value="$putovanje->fakultativni_izleti ?? old('fakultativni_izleti')" rows="5" />
                 </div>
             </div>
@@ -90,7 +85,7 @@
                 <button type="submit" class="btn button-primary">
                     {{ __('Sačuvaj') }}
                 </button>
-                <a href="{{ route('putovanja.index') }}" class="btn btn-secondary">
+                <a href="{{ route('putovanja.index') }}" class="btn button-outline-primary">
                     {{ __('Nazad') }}
                 </a>
             </div>
@@ -109,13 +104,13 @@
         var idx = terminCount++;
         var $row = $(`
             <div class="termin-row row mb-2 align-items-end" data-idx="${idx}">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-field">
                         <label class="label-select">{{ __('Datum od') }} *</label>
                         <input type="text" name="termini[${idx}][datum_od]" class="form-control" autocomplete="off">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-field">
                         <label class="label-select">{{ __('Datum do') }} *</label>
                         <input type="text" name="termini[${idx}][datum_do]" class="form-control" autocomplete="off">
@@ -127,9 +122,9 @@
                         <input type="number" name="termini[${idx}][broj_dostupnih_mesta]" class="form-control" min="1" value="${broj_mesta ?? ''}">
                     </div>
                 </div>
-                <div class="col-md-1 d-flex align-items-end pb-1">
+                <div class="col-md-1 d-flex align-self-center pt-3">
                     <button type="button" class="btn btn-danger btn-sm btn-ukloni-termin">
-                        <i class="fa fa-times"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                 </div>
             </div>
@@ -145,11 +140,26 @@
     }
 
     $(function () {
-        // Termini — pre-populate (edit) or start with one empty row (create)
-        var termini = @json($termini);
-        if (termini.length > 0) {
-            $.each(termini, function (i, t) {
+        var fieldErrors = @json($errors->messages());
+        // old() ima prioritet nad $termini (slučaj neuspele validacije)
+        var termini = @json(old('termini') ?: $termini);
+        var terminiKeys = Object.keys(termini);
+
+        if (terminiKeys.length > 0) {
+            terminiKeys.forEach(function (origKey) {
+                var t = termini[origKey];
                 dodajTermin(t.datum_od, t.datum_do, t.broj_dostupnih_mesta);
+
+                var $row = $('#termini-container .termin-row').last();
+                ['datum_od', 'datum_do', 'broj_dostupnih_mesta'].forEach(function (field) {
+                    var errKey = 'termini.' + origKey + '.' + field;
+                    if (fieldErrors[errKey]) {
+                        $row.find('input[name$="[' + field + ']"]')
+                            .addClass('is-invalid')
+                            .closest('.form-field')
+                            .append('<div class="invalid-feedback d-block">' + fieldErrors[errKey][0] + '</div>');
+                    }
+                });
             });
         } else {
             dodajTermin();

@@ -6,10 +6,10 @@
         <h4>Detalji rezervacije #{{ $rezervacija->id }}</h4>
         <div>
             <a href="{{ route('rezervacije.edit', $rezervacija->id) }}" class="btn btn-warning">
-                <i class="fa fa-edit"></i> Izmeni
+                <i class="fa fa-edit"></i> {{ __('Izmeni') }}
             </a>
-            <a href="{{ route('rezervacije.index') }}" class="btn btn-secondary">
-                <i class="fa fa-arrow-left"></i> Nazad
+            <a href="{{ route('rezervacije.index') }}" class="btn button-outline-primary">
+                 {{ __('Nazad') }}
             </a>
         </div>
     </div>

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('naziv');
             $table->foreignId('id_drzave')->constrained('drzavas')->onDelete('restrict');
             $table->string('grad');
-            $table->string('mesto_polaska');
             $table->date('datum_od');
             $table->date('datum_do');
             $table->integer('broj_dana');

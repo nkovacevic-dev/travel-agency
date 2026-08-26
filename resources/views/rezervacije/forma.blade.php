@@ -74,10 +74,10 @@
 
             <div class="mt-3">
                 <button type="submit" class="btn button-primary">
-                    <i class="fa fa-save"></i> {{ __('Sačuvaj') }}
+                     {{ __('Sačuvaj') }}
                 </button>
-                <a href="{{ route('rezervacije.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-times"></i> {{ __('Otkaži') }}
+                <a href="{{ route('rezervacije.index') }}" class="btn button-outline-primary">
+                     {{ __('Nazad') }}
                 </a>
             </div>
         </form>
