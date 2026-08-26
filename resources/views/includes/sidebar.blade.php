@@ -1,4 +1,6 @@
-<img src="{{ asset('images/logo-sidebar2.png') }}" class="logo" alt="Logo">
+<a href="{{ url('/') }}">
+    <img src="{{ asset('images/logo-sidebar2.png') }}" class="logo" alt="Logo">
+</a>
 <ul class="sidebar-menu">
      <li class="sidebar-item has-submenu">
          <a href="#submenu1" class="sidebar-link">

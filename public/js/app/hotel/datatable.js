@@ -122,3 +122,34 @@ $('#datatable_hoteli').DataTable({
         url: datatable_lang
     }  
 });
+
+$(document).on('click', '.btn-delete-hotel', function () {
+    const id = $(this).data('id');
+    const naziv = $(this).closest('tr').find('td:nth-child(2)').text().trim();
+
+    Swal.fire({
+        title: 'Obriši hotel?',
+        html: naziv ? '<b>' + naziv + '</b>' : '',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Obriši',
+        cancelButtonText: 'Otkaži',
+        reverseButtons: true,
+    }).then(function (result) {
+        if (!result.isConfirmed) return;
+
+        axios.delete('/admin/hoteli/' + id)
+            .then(function (response) {
+                if (response.data.success) {
+                    Swal.fire({ icon: 'success', title: response.data.message, timer: 2000, showConfirmButton: false });
+                    $('#datatable_hoteli').DataTable().ajax.reload();
+                } else {
+                    Swal.fire({ icon: 'error', title: response.data.message });
+                }
+            })
+            .catch(function (error) {
+                const msg = error.response?.data?.message ?? 'Došlo je do greške pri brisanju.';
+                Swal.fire({ icon: 'error', title: msg });
+            });
+    });
+});

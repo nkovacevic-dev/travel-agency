@@ -79,25 +79,32 @@ $("#datatable_putovanja").DataTable({
 // Brisanje putovanja
 $(document).on('click', '.btn-delete-putovanje', function() {
     const id = $(this).data('id');
-    
-    if (confirm('Da li ste sigurni da želite da obrišete ovo putovanje?')) {
+    const naziv = $(this).closest('tr').find('td:nth-child(2)').text().trim();
+
+    Swal.fire({
+        title: 'Obriši putovanje?',
+        html: naziv ? '<b>' + naziv + '</b>' : '',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Obriši',
+        cancelButtonText: 'Otkaži',
+        reverseButtons: true,
+    }).then(function(result) {
+        if (!result.isConfirmed) return;
+
         axios.delete('/admin/putovanja/' + id)
-            .then(function (response) {
+            .then(function(response) {
                 if (response.data.success) {
-                    alert(response.data.message);
+                    Swal.fire({ icon: 'success', title: response.data.message, timer: 2000, showConfirmButton: false });
                     $("#datatable_putovanja").DataTable().ajax.reload();
                 } else {
-                    alert('Greška: ' + response.data.message);
+                    Swal.fire({ icon: 'error', title: response.data.message });
                 }
             })
-            .catch(function (error) {
-                if (error.response && error.response.data && error.response.data.message) {
-                    alert('Greška: ' + error.response.data.message);
-                } else {
-                    alert('Došlo je do greške pri brisanju.');
-                }
-                console.log(error);
+            .catch(function(error) {
+                const msg = error.response?.data?.message ?? 'Došlo je do greške pri brisanju.';
+                Swal.fire({ icon: 'error', title: msg });
             });
-    }
+    });
 });
 

@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="card-body">
-        <table id="datatable_rezervacije" class="table table-striped" style="width: 100%" data-url="{{ route('rezervacije.datatable') }}">
+        <table id="datatable_rezervacije" class="table" style="width: 100%" data-url="{{ route('rezervacije.datatable') }}">
             <thead>
                 <tr>
                     <th>ID</th>

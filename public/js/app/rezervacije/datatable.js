@@ -48,7 +48,7 @@ $("#datatable_rezervacije").DataTable({
         },
         {
             data: "termin",
-            name: "rezervacijes.termin",
+            name: "terminis.datum_od",
         },
         {
             data: "broj_odraslih",

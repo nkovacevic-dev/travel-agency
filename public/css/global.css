@@ -297,15 +297,16 @@ label {
     border-radius: 6px !important;
 }
 
-.dt-paging .dt-paging-button.current > * {
-    background-color: var(--primary) !important;
-    border-color: var(--primary) !important;
+.dt-paging .dt-paging-button.current > *,
+.pagination .page-item.active .page-link {
+    background-color: #B8944F !important;
+    border-color: #B8944F !important;
     color: var(--white) !important;
 }
 
 .dt-paging .dt-paging-button:not(.disabled):hover > * {
-    background-color: var(--primary-hover) !important;
-    border-color: var(--primary-hover) !important;
+    background-color: #a07d3e !important;
+    border-color: #a07d3e !important;
     color: var(--white) !important;
 }
 

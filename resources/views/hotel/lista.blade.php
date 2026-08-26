@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="card-body">
-        <table class="table table-striped" id="datatable_hoteli" style="width: 100%" data-url="{{ route('hoteli.datatable')}}">
+        <table class="table" id="datatable_hoteli" style="width: 100%" data-url="{{ route('hoteli.datatable')}}">
             <thead>
                 <tr>
                     <th>ID</th>

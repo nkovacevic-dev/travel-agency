@@ -27,13 +27,20 @@ class RezervacijeController extends Controller
      */
     public function tabela()
     {
-        $query = Rezervacije::select('rezervacijes.*', 'putovanjas.naziv as naziv_putovanja')
+        $query = Rezervacije::select(
+                'rezervacijes.*',
+                'putovanjas.naziv as naziv_putovanja',
+                'terminis.datum_od',
+                'terminis.datum_do'
+            )
             ->leftJoin('putovanjas', 'putovanjas.id', '=', 'rezervacijes.id_putovanja')
+            ->leftJoin('terminis', 'terminis.id', '=', 'rezervacijes.id_termina')
             ->orderBy('rezervacijes.created_at', 'desc');
 
         return datatables()->of($query)
             ->addColumn('akcija', 'rezervacije.dt.kolona_akcije')
-            ->rawColumns(['akcija'])
+            ->addColumn('termin', 'rezervacije.dt.kolona_termin')
+            ->rawColumns(['akcija', 'termin'])
             ->make(true);
     }
 
@@ -56,12 +63,10 @@ class RezervacijeController extends Controller
             return ['id' => $item->id, 'text' => $item->naziv];
         });
 
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe'));
+        $termini = [];
+        $hoteli = [];
+        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini'));
     }
-
-    /**
-     * Store a newly created resource in storage (admin & javno).
-     */
     public function store(StoreRezervacijaRequest $request)
     {
         try {
@@ -139,12 +144,24 @@ class RezervacijeController extends Controller
             return ['id' => $item->id, 'text' => $item->naziv];
         });
 
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe'));
-    }
+        // Pre-populate termini i hoteli za odabrano putovanje
+        $termini = [];
+        $hoteli = [];
+        if ($rezervacija->id_putovanja) {
+            $putovanje = Putovanje::with('termini')->find($rezervacija->id_putovanja);
+            if ($putovanje) {
+                $termini = $putovanje->termini->map(fn($t) => [
+                    'id'   => $t->id,
+                    'text' => $t->datum_od->format('d.m.Y.') . ' – ' . $t->datum_do->format('d.m.Y.'),
+                ])->toArray();
+                $hoteli = Hotel::where('id_drzave', $putovanje->id_drzave)->get()->map(fn($h) => [
+                    'id' => $h->id, 'text' => $h->naziv,
+                ])->toArray();
+            }
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
+        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini'));
+    }
     public function update(UpdateRezervacijaRequest $request, string $id)
     {
         try {

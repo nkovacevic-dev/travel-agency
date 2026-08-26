@@ -53,7 +53,7 @@
                      {{ __('Sačuvaj') }}
                 </button>
                 <a href="{{ route('hoteli.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-times"></i> {{ __('Nazad') }}
+                     {{ __('Nazad') }}
                 </a>
             </div>
         </form>
