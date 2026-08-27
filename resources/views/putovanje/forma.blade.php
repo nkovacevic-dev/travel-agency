@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div class="col-md-1 d-flex align-self-center pt-3">
-                    <button type="button" class="btn btn-danger btn-sm btn-ukloni-termin">
+                    <button type="button" class="btn red-icon btn-sm btn-ukloni-termin">
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>

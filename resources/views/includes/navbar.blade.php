@@ -1,3 +1,4 @@
+<!-- Navbar za početnu stranicu -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="logo-placeholder">

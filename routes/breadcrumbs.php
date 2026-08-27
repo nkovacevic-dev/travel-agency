@@ -113,4 +113,9 @@ Breadcrumbs::for('korisnici.show', function ($trail, $id) {
     $trail->push(__('Prikaz korisnika'), route('korisnici.show', $id));
 });
 
+Breadcrumbs::for('moj-nalog', function ($trail) {
+    $trail->parent('pocetna');
+    $trail->push(__('Moj nalog'), route('moj-nalog'));
+});
+
 

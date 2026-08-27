@@ -5,7 +5,7 @@
     <a href="{{ route('korisnici.edit', $id) }}" class="btn btn-sm" title="Izmeni">
         <i class="fa fa-edit"></i>
     </a>
-    <button type="button" class="btn btn-sm btn-danger btn-delete-korisnik" data-id="{{ $id }}" title="Obriši">
+    <button type="button" class="btn btn-sm red-icon btn-delete-korisnik" data-id="{{ $id }}" title="Obriši">
         <i class="fa fa-trash"></i>
     </button>
 </div>

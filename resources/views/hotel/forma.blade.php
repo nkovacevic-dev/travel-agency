@@ -52,7 +52,7 @@
                 <button type="submit" class="btn button-primary">
                      {{ __('Sačuvaj') }}
                 </button>
-                <a href="{{ route('hoteli.index') }}" class="btn btn-secondary">
+                <a href="{{ route('hoteli.index') }}" class="btn button-secondary">
                      {{ __('Nazad') }}
                 </a>
             </div>

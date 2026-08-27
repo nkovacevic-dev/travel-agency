@@ -11,6 +11,7 @@
             @if(isset($korisnik->id))
                 @method('PUT')
             @endif
+            <input type="hidden" name="_redirect" value="{{ $redirectTo ?? 'korisnici.index' }}">
             
             <div class="row">
                 <div class="col-md-6">
@@ -54,7 +55,7 @@
                 <button type="submit" class="btn button-primary">
                      {{ __('Sačuvaj') }}
                 </button>
-                <a href="{{ route('korisnici.index') }}" class="btn btn-secondary">
+                <a href="{{ route('korisnici.index') }}" class="btn button-secondary">
                      {{ __('Nazad') }}
                 </a>
             </div>

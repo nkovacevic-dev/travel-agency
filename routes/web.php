@@ -14,6 +14,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('po
 Route::get('/putovanja/{id}', [PutovanjeController::class, 'show'])->name('putovanja.show');
 // Route::post('/rezervacije', [RezervacijeController::class, 'store'])->name('rezervacije.store');
 
+Route::middleware(['auth'])->get('/moj-nalog', [KorisnikController::class, 'mojNalog'])->name('moj-nalog');
+
 // Admin rute (zahtevaju autentifikaciju)
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Putovanja

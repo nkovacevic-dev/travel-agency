@@ -23,9 +23,13 @@ class UpdateRezervacijaRequest extends FormRequest
     {
         return [
             'puno_ime' => 'required|string|max:255',
-            'telefon' => 'required|string|max:20',
             'email' => 'required|email|max:255',
-            'termin' => 'required|string|max:255',
+            'telefon' => 'required|string|max:20',
+            'broj_pasosa' => 'required|string|max:50',
+            'adresa' => 'required|string|max:255',
+            'mesto' => 'required|string|max:100',
+            'drzava' => 'required|string|max:100',
+            'id_termina' => 'required|exists:terminis,id',
             'broj_odraslih' => 'required|integer|min:1',
             'broj_dece' => 'nullable|integer|min:0',
             'napomena' => 'nullable|string|max:1000',

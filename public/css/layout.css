@@ -11,6 +11,16 @@
     margin-bottom: 10px;
 }
 
+.right-header .dropdown .btn-link {
+    color: var(--primary);
+}
+
+.right-header .dropdown-item:hover,
+.right-header .dropdown-item:focus {
+    background-color: var(--primary);
+    color: #fff;
+}
+
 .logo {
     width: 100%;
     margin-bottom: 25px;

@@ -12,6 +12,9 @@
                 @method('PUT')
             @endif
 
+             <div class="row">
+                <span>{{ __('Putnik') }}</span>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <x-input-text label="{{ __('Ime i prezime') }}" name="puno_ime" :value="$rezervacija->puno_ime ?? old('puno_ime')" :required="true" />
@@ -20,13 +23,30 @@
                     <x-input-text label="{{ __('Email') }}" name="email" type="email" :value="$rezervacija->email ?? old('email')" :required="true" />
                 </div>
                 <div class="col-md-4">
-                    <x-input-text label="{{ __('Telefon') }}" name="telefon" :value="$rezervacija->telefon ?? old('telefon')" :required="true" />
+                    <x-input-text label="{{ __('Broj telefona') }}" name="telefon" :value="$rezervacija->telefon ?? old('telefon')" :required="true" />
+                </div>
+                <div class="col-md-4">
+                    <x-input-text label="{{ __('Broj pasoša') }}" name="broj_pasosa" :value="$rezervacija->broj_pasosa ?? old('broj_pasosa')" :required="true" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <x-input-text label="{{ __('Adresa') }}" name="adresa" :value="$rezervacija->adresa ?? old('adresa')" :required="true" />
+                </div>
+                <div class="col-md-4">
+                    <x-input-text label="{{ __('Mesto') }}" name="mesto" :value="$rezervacija->mesto ?? old('mesto')" :required="true" />
+                </div>
+                <div class="col-md-4">
+                    <x-input-text label="{{ __('Država') }}" name="drzava" :value="$rezervacija->drzava ?? old('drzava')" :required="true" />
                 </div>
             </div>
                 
             <div class="row">
+                <span>{{ __('Putovanje') }}</span>
+            </div>
+            <div class="row">
                 <div class="col-md-4">
-                    <x-input-select label="{{ __('Putovanje') }}" name="id_putovanja" :items="$putovanja" :value="$rezervacija->id_putovanja ?? old('id_putovanja')" :emptyOption="true" :required="true" />
+                    <x-input-select label="{{ __('Naziv putovanja') }}" name="id_putovanja" :items="$putovanja" :value="$rezervacija->id_putovanja ?? old('id_putovanja')" :emptyOption="true" :required="true" />
                 </div>
                 <div class="col-md-4">
                     <x-input-select label="{{ __('Termin') }}" name="id_termina" :items="$termini" :value="$rezervacija->id_termina ?? old('id_termina')" :emptyOption="true" :required="true" />

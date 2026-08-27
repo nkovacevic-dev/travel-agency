@@ -31,10 +31,24 @@
                                 <h4>{{ __('Dobrodošli') }} {{ Auth::user()->name }}</h4>
                             </div>
                             <div class="right-header d-flex align-items-center gap-3">
-                                <a class="dropdown-item" href="{{ route('logout')  }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                                    Odjava
-                                </a>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-link p-0 text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-user-circle fa-lg"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('moj-nalog') }}">
+                                                <i class="fa fa-user me-2"></i>Moj nalog
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <i class="fa fa-sign-out me-2"></i>Odjava
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>

@@ -41,6 +41,13 @@ class KorisnikController extends Controller
         return redirect()->route('korisnici.index')->with('success', 'Korisnik je uspešno dodat!');
     }
 
+    public function mojNalog()
+    {
+        $korisnik = auth()->user();
+        $redirectTo = 'pocetna';
+        return view('korisnik.forma', compact('korisnik', 'redirectTo'));
+    }
+
     public function show(string $id)
     {
         $korisnik = User::findOrFail($id);
@@ -71,7 +78,10 @@ class KorisnikController extends Controller
 
         $korisnik->save();
 
-        return redirect()->route('korisnici.index')->with('success', 'Korisnik je uspešno izmenjen!');
+        $redirectTo = $request->input('_redirect', 'korisnici.index');
+        $message = $redirectTo === 'pocetna' ? 'Nalog je uspešno izmenjen!' : 'Korisnik je uspešno izmenjen!';
+
+        return redirect()->route($redirectTo)->with('success', $message);
     }
 
     public function destroy(string $id)

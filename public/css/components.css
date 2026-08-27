@@ -318,6 +318,10 @@ a.button-primary:focus,
     color: var(--primary) !important;
 }
 
+.red-icon {
+    color: var(--red) !important;
+}
+
 div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
     border: 1px solid;
     padding: 8px 10px;
@@ -338,6 +342,9 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel) {
     border: none;
 }
 
+.swal2-confirm {
+    background-color: var(--red) !important;
+}
 
 /* ===== Auth ===== */
 .auth-container {

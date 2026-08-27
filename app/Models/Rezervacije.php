@@ -11,16 +11,20 @@ class Rezervacije extends Model
 
     protected $fillable = [
         'puno_ime',
-        'telefon',
-        'id_termina',
-        'broj_odraslih',
-        'broj_dece',
         'email',
-        'napomena',
+        'telefon',
+        'broj_pasosa',
+        'adresa',
+        'mesto',
+        'drzava',
         'id_putovanja',
+        'id_termina',
         'id_hotela',
         'id_tip_sobe',
+        'broj_odraslih',
+        'broj_dece',
         'status',
+        'napomena',
         'ukupna_cena',
     ];
 
