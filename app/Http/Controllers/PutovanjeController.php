@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePutovanjeRequest;
 use App\Models\Drzava;
 use App\Models\Hotel;
+use App\Models\PutovanjaSlike;
 use App\Models\Putovanje;
 use App\Models\TipPrevoza;
 use App\Models\TipSobe;
@@ -64,22 +65,16 @@ class PutovanjeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    private function saveGalerija(Request $request): array
-    {
-        $paths = [];
-        foreach ($request->file('galerija_slika', []) as $file) {
-            $paths[] = $file->store('putovanja', 'public');
-        }
-        return $paths;
-    }
-
     public function store(StorePutovanjeRequest $request)
     {
         try {
             DB::beginTransaction();
             $data = $request->except(['termini', 'galerija_slika']);
-            $data['galerija_slika'] = $this->saveGalerija($request);
             $putovanje = Putovanje::create($data);
+            foreach ($request->file('galerija_slika', []) as $file) {
+                $path = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
+                $putovanje->slike()->create(['slika' => $path]);
+            }
             foreach ($request->input('termini', []) as $termin) {
                 $putovanje->termini()->create([
                     'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
@@ -100,7 +95,7 @@ class PutovanjeController extends Controller
      */
     public function show(string $id)
     {
-        $putovanje = Putovanje::with(['drzava', 'hotel', 'tipSobe', 'tipPrevoza'])->findOrFail($id);
+        $putovanje = Putovanje::with(['drzava', 'hotel', 'tipSobe', 'tipPrevoza', 'slike'])->findOrFail($id);
 
         $tip_sobe = TipSobe::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
         $drzave   = Drzava::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
@@ -157,10 +152,14 @@ class PutovanjeController extends Controller
             $putovanje = Putovanje::findOrFail($id);
             $data = $request->except(['termini', 'galerija_slika']);
             if ($request->hasFile('galerija_slika')) {
-                foreach ($putovanje->galerija_slika ?? [] as $oldPath) {
-                    Storage::disk('public')->delete($oldPath);
+                foreach ($putovanje->slike as $slika) {
+                    Storage::disk('public')->delete($slika->slika);
                 }
-                $data['galerija_slika'] = $this->saveGalerija($request);
+                $putovanje->slike()->delete();
+                foreach ($request->file('galerija_slika') as $file) {
+                    $path = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
+                    $putovanje->slike()->create(['slika' => $path]);
+                }
             }
             $putovanje->update($data);
             $putovanje->termini()->delete();
@@ -192,8 +191,8 @@ class PutovanjeController extends Controller
                 return response()->json(['success' => false, 'message' => 'Ne možete obrisati putovanje koje ima rezervacije!'], 400);
             }
             
-            foreach ($putovanje->galerija_slika ?? [] as $path) {
-                Storage::disk('public')->delete($path);
+            foreach ($putovanje->slike as $slika) {
+                Storage::disk('public')->delete($slika->slika);
             }
             $putovanje->delete();
             return response()->json(['success' => true, 'message' => 'Putovanje je uspešno obrisano!']);

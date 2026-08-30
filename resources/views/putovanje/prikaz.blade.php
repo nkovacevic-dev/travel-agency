@@ -1,18 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    {{-- Hero sekcija --}}
-    <div class="row mb-4">
-        <div class="col-md-12">
-            @if($putovanje->baner_slika)
-                <img src="{{ asset('storage/' . $putovanje->baner_slika) }}" class="img-fluid w-100" style="max-height: 400px; object-fit: cover; border-radius: 10px;" alt="{{ $putovanje->naziv }}">
-            @else
-                <img src="{{ asset('images/alps.png') }}" class="img-fluid w-100" style="max-height: 400px; object-fit: cover; border-radius: 10px;" alt="{{ $putovanje->naziv }}">
-            @endif
-        </div>
-    </div>
-
     <x-tabs>
 
         <x-tab name="detalji" label="{{ __('Detalji putovanja') }}" :active="true">
@@ -103,13 +91,31 @@
                         </div>
                     </div>
 
-                    @auth
+                    @if($putovanje->slike->isNotEmpty())
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="label-select"><b>{{ __('Galerija slika') }}</b></label>
+                            <div class="d-flex flex-wrap gap-2 mt-1">
+                                @foreach($putovanje->slike as $slika)
+                                <a href="{{ asset('storage/' . $slika->slika) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $slika->slika) }}"
+                                         style="height: 120px; width: 160px; object-fit: cover; border-radius: 4px; border: 1px solid #dee2e6;"
+                                         alt="{{ $putovanje->naziv }}">
+                                </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="mt-3">
                         <a href="{{ route('putovanja.edit', $putovanje->id) }}" class="btn button-primary">
                             {{ __('Izmeni') }}
                         </a>
+                        <a href="{{ route('putovanja.index') }}" class="btn button-secondary">
+                         {{ __('Nazad') }}
+                        </a>
                     </div>
-                    @endauth
                 </div>
             </div>
         </x-tab>
@@ -180,5 +186,4 @@
         @endauth
 
     </x-tabs>
-</div>
 @endsection

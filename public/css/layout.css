@@ -157,6 +157,14 @@
     transition: transform 0.3s;
 }
 
+#main-navbar.navbar-scrolled {
+    background-color: rgba(0, 0, 0, 0.7)!important;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link {
+    color: var(--primary) !important;
+}
 
 /* ===== Navbar (admin) ===== */
 @media (max-width: 991px) {

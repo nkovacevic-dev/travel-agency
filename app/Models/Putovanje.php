@@ -23,8 +23,6 @@ class Putovanje extends Model
         'broj_rezervacija',
         'fakultativni_izleti',
         'pravila_otkazivanja',
-        'baner_slika',
-        'galerija_slika',
     ];
 
     protected $casts = [
@@ -32,7 +30,6 @@ class Putovanje extends Model
         'broj_nocenja' => 'integer',
         'broj_rezervacija' => 'integer',
         'cena' => 'decimal:2',
-        'galerija_slika' => 'array',
     ];
 
     // Relacije
@@ -64,5 +61,10 @@ class Putovanje extends Model
     public function rezervacije()
     {
         return $this->hasMany(Rezervacije::class, 'id_putovanja');
+    }
+
+    public function slike()
+    {
+        return $this->hasMany(PutovanjaSlike::class, 'id_putovanja');
     }
 }

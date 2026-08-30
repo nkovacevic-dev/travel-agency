@@ -5,11 +5,7 @@
     {{-- Hero sekcija --}}
     <div class="row mb-4">
         <div class="col-md-12">
-            @if($putovanje->baner_slika)
-                <img src="{{ asset('storage/' . $putovanje->baner_slika) }}" class="img-fluid w-100" style="max-height: 400px; object-fit: cover; border-radius: 10px;" alt="{{ $putovanje->naziv }}">
-            @else
-                <img src="{{ asset('images/alps.png') }}" class="img-fluid w-100" style="max-height: 400px; object-fit: cover; border-radius: 10px;" alt="{{ $putovanje->naziv }}">
-            @endif
+            <img src="{{ asset('images/alps.png') }}" class="img-fluid w-100" style="max-height: 400px; object-fit: cover; border-radius: 10px;" alt="{{ $putovanje->naziv }}">
         </div>
     </div>
 

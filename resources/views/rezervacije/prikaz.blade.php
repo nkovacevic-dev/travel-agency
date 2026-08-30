@@ -4,14 +4,6 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4>Detalji rezervacije #{{ $rezervacija->id }}</h4>
-        <div>
-            <a href="{{ route('rezervacije.edit', $rezervacija->id) }}" class="btn btn-warning">
-                <i class="fa fa-edit"></i> {{ __('Izmeni') }}
-            </a>
-            <a href="{{ route('rezervacije.index') }}" class="btn button-outline-primary">
-                 {{ __('Nazad') }}
-            </a>
-        </div>
     </div>
     <div class="card-body">
         <div class="row">
@@ -50,7 +42,14 @@
                     </tr>
                     <tr>
                         <th>Termin:</th>
-                        <td>{{ $rezervacija->termin }}</td>
+                        <td>
+                            @if($rezervacija->termin)
+                                {{ \Carbon\Carbon::parse($rezervacija->termin->datum_od)->format('d.m.Y.') }}
+                                – {{ \Carbon\Carbon::parse($rezervacija->termin->datum_do)->format('d.m.Y.') }}
+                            @else
+                                N/A
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>Hotel:</th>
@@ -94,6 +93,14 @@
                     </tr>
                 </table>
             </div>
+        </div>
+        <div>
+            <a href="{{ route('rezervacije.edit', $rezervacija->id) }}" class="btn button-primary">
+                 {{ __('Izmeni') }}
+            </a>
+            <a href="{{ route('rezervacije.index') }}" class="btn button-secondary">
+                 {{ __('Nazad') }}
+            </a>
         </div>
     </div>
 </div>

@@ -29,8 +29,6 @@ return new class extends Migration
             $table->text('program_putovanja');
             $table->text('fakultativni_izleti')->nullable();
             $table->text('pravila_otkazivanja')->nullable();
-            $table->string('baner_slika')->nullable();
-            $table->json('galerija_slika')->nullable();
             $table->timestamps();
         });
     }

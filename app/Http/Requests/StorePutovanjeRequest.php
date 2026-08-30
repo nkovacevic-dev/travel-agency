@@ -23,7 +23,7 @@ class StorePutovanjeRequest extends FormRequest
     {
         return [
             'naziv' => 'required|string|max:255',
-            'id_drzave' => 'required|exists:drzavas,id',
+            'id_drzave' => 'required',
             'grad' => 'required|string|max:255',
             'termini' => 'required|array|min:1',
             'termini.*.datum_od' => 'required|date_format:d.m.Y.',
@@ -33,13 +33,12 @@ class StorePutovanjeRequest extends FormRequest
             'broj_nocenja' => 'required|integer|min:0',
             'broj_rezervacija' => 'nullable|integer|min:0',
             'cena' => 'required|numeric|min:0',
-            'id_hotel' => 'nullable',
+            'id_hotela' => 'required',
             'id_tip_prevoza' => 'required',
             'prevoznik' => 'nullable|string|max:255',
             'program_putovanja' => 'required|string',
             'fakultativni_izleti' => 'nullable|string',
             'pravila_otkazivanja' => 'nullable|string',
-            'baner_slika' => 'nullable|string|max:255',
             'galerija_slika' => 'nullable|array|max:5',
             'galerija_slika.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ];
@@ -50,7 +49,6 @@ class StorePutovanjeRequest extends FormRequest
         return [
             'naziv.required' => __('Polje naziv je obavezno.'),
             'id_drzave.required' => __('Polje država je obavezno.'),
-            'id_drzave.exists' => __('Izabrana država ne postoji.'),
             'grad.required' => __('Polje grad je obavezno.'),
             'termini.required' => __('Dodajte najmanje jedan termin putovanja.'),
             'termini.min' => __('Dodajte najmanje jedan termin putovanja.'),
@@ -61,6 +59,7 @@ class StorePutovanjeRequest extends FormRequest
             'broj_nocenja.required' => __('Polje broj noćenja je obavezno.'),
             'cena.required' => __('Polje cena po osobi je obavezno.'),
             'id_tip_prevoza.required' => __('Polje tip prevoza je obavezno.'),
+            'id_hotela.required' => __('Polje hotel je obavezno.'),
             'program_putovanja.required' => __('Polje program putovanja je obavezno.'),
         ];
     }

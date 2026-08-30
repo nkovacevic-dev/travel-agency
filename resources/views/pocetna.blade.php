@@ -2,6 +2,7 @@
 @section('content')
 
 @include('includes.navbar')
+@include('pocetna.slider')
 
 <section class="py-5" id="putovanja">
     <div class="container">
