@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="auth-container">
-    <div class="login-card">
-        <div class="text-center mb-4">
-            <div class="logo-placeholder mb-3">
-                <!-- Ovde može logo -->
+    <div class="auth-card">
+        <div class="mb-4">
+             <div class="logo-placeholder">
+                <img src="/images/logo.png" alt="Logo" class="logo-auth">
             </div>
             <h3>{{ __('Reset Password') }}</h3>
             <p class="text-muted">

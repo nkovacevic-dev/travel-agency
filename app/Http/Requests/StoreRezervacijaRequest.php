@@ -28,7 +28,7 @@ class StoreRezervacijaRequest extends FormRequest
             'broj_pasosa' => 'required|string|max:50',
             'adresa' => 'required|string|max:255',
             'mesto' => 'required|string|max:100',
-            'drzava' => 'required|string|max:100',
+            'id_drzave' => 'required|exists:drzavas,id',
             'id_termina' => 'required|exists:terminis,id',
             'broj_odraslih' => 'required|integer|min:1',
             'broj_dece' => 'nullable|integer|min:0',

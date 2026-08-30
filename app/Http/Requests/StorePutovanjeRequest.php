@@ -40,7 +40,8 @@ class StorePutovanjeRequest extends FormRequest
             'fakultativni_izleti' => 'nullable|string',
             'pravila_otkazivanja' => 'nullable|string',
             'baner_slika' => 'nullable|string|max:255',
-            'galerija_slika' => 'nullable|array',
+            'galerija_slika' => 'nullable|array|max:5',
+            'galerija_slika.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ];
     }
 

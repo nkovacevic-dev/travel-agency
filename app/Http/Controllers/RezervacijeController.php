@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateRezervacijaRequest;
 use App\Models\Rezervacije;
 use App\Models\Putovanje;
 use App\Models\Hotel;
+use App\Models\Drzava;
 use App\Models\TipSobe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,9 +64,10 @@ class RezervacijeController extends Controller
             return ['id' => $item->id, 'text' => $item->naziv];
         });
 
+        $drzave = Drzava::orderBy('naziv')->get()->map(fn($d) => ['id' => $d->id, 'text' => $d->naziv]);
         $termini = [];
         $hoteli = [];
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini'));
+        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini', 'drzave'));
     }
     public function store(StoreRezervacijaRequest $request)
     {
@@ -160,7 +162,8 @@ class RezervacijeController extends Controller
             }
         }
 
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini'));
+        $drzave = Drzava::orderBy('naziv')->get()->map(fn($d) => ['id' => $d->id, 'text' => $d->naziv]);
+        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini', 'drzave'));
     }
     public function update(UpdateRezervacijaRequest $request, string $id)
     {

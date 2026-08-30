@@ -12,12 +12,14 @@ class InputFile extends Component
     public $required;
     public $disabled;
     public $type;
+    public $multiple;
+    public $existing;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label = '', $name = '', $value = '', $required = false, $disabled=false, $type = '')
+    public function __construct($label = '', $name = '', $value = '', $required = false, $disabled = false, $type = '', $multiple = false, $existing = [])
     {
         $this->label = $label;
         $this->name = $name;
@@ -25,6 +27,8 @@ class InputFile extends Component
         $this->required = $required;
         $this->disabled = $disabled;
         $this->type = $type;
+        $this->multiple = $multiple;
+        $this->existing = $existing ?? [];
     }
 
     /**

@@ -1,13 +1,13 @@
 @push('tab_links_'.$tabs_id)
 
-<li class="tab-item">
-    <a class="tab-link @if($active) active @endif" id="nav-{{$name}}-tab" data-toggle="tab" href="#nav-{{$name}}"
-        role="tab" aria-controls="nav-{{$name}}" aria-selected="true">{{$label}}</a>
+<li class="nav-item" role="presentation">
+    <a class="nav-link @if($active) active @endif" id="nav-{{$name}}-tab" data-bs-toggle="tab" href="#nav-{{$name}}"
+        role="tab" aria-controls="nav-{{$name}}" aria-selected="{{ $active ? 'true' : 'false' }}">{{$label}}</a>
 </li>
 @endpush
 @push('tab_links_responsive_'.$tabs_id)
-    <a class="tab-link @if($active) active @endif" id="nav-{{$name}}-tab" data-toggle="tab" href="#nav-{{$name}}"
-        role="tab" aria-controls="nav-{{$name}}" aria-selected="true">{{$label}}</a>
+    <a class="nav-link @if($active) active @endif" id="nav-{{$name}}-tab" data-bs-toggle="tab" href="#nav-{{$name}}"
+        role="tab" aria-controls="nav-{{$name}}" aria-selected="{{ $active ? 'true' : 'false' }}">{{$label}}</a>
 @endpush
 
 @push('tab_content_'.$tabs_id)

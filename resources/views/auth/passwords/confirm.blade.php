@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="auth-container">
-    <div class="login-card">
+    <div class="auth-card">
         <div class="text-center mb-4">
             <div class="logo-placeholder mb-3">
                 <!-- Ovde može logo -->

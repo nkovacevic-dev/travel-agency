@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\Notifications\ResetPassword;
+use App\Mail\ResetPasswordMail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,5 +20,15 @@ class AppServiceProvider extends ServiceProvider
             'create' => 'unos',
             'edit'   => 'izmena',
         ]);
+
+        ResetPassword::toMailUsing(function ($notifiable, $token) {
+            $url = url(route('password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ], false));
+
+            return (new ResetPasswordMail($url))
+                ->to($notifiable->getEmailForPasswordReset());
+        });
     }
 }

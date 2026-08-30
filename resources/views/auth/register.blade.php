@@ -2,10 +2,12 @@
 
 @section('content')
 <div class="auth-container">
-    <div class="login-card">
-        <div class="text-center mb-4">
+    <div class="auth-card">
+        <div class="mb-4">
             <div class="logo-placeholder">
-                <img src="/images/logo.png" alt="Logo" class="logo">
+                <a href="{{ url('/login') }}">
+                    <img src="/images/logo.png" alt="Logo" class="logo-auth">
+                </a>
             </div>
             <h3>{{ __('Registruj se') }}</h3>
             <p class="text-muted">
@@ -58,12 +60,12 @@
             </button>
         </form>
 
-        <div class="text-center mt-4">
+        <!-- <div class="text-center mt-4">
             <h6 class="text-muted">{{ __('Već imate nalog?') }}</h6>
-            <a href="{{ route('login') }}" class="w-100 btn btn-outline-secondary">
+            <a href="{{ route('login') }}" class="w-100 btn button-secondary">
                 {{ __('Prijavi se!') }}
             </a>
-        </div>
+        </div> -->
     </div>
 </div>
 @endsection

@@ -77,6 +77,12 @@
                     <x-input-textarea label="{{ __('Pravila otkazivanja') }}" name="pravila_otkazivanja" :value="$putovanje->pravila_otkazivanja ?? old('pravila_otkazivanja')" rows="3" />
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <x-input-file label="{{ __('Galerija slika') }}" name="galerija_slika" :multiple="true" :existing="$putovanje->galerija_slika ?? []" type="image/*" />
+                </div>
+            </div>
             
             <div class="mt-3">
                 <button type="submit" class="btn button-primary">

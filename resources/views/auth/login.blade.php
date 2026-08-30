@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="auth-container">
-    <div class="login-card">
+    <div class="auth-card">
         <div class="mb-4">
             <div class="logo-placeholder">
-                <img src="/images/logo.png" alt="Logo" class="logo">
+                <img src="/images/logo.png" alt="Logo" class="logo-auth">
             </div>
             <h3>{{ __('Prijavi se') }}</h3>
             <p class="text-muted">
@@ -33,12 +33,11 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="form-check">
-                    <input id="checkbox1" class="form-check-input" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label for="checkbox1" class="form-check-label text-muted mb-0">
-                        {{ __('Zapamti me!') }}
-                    </label>
-                </div>
+                <label class="form-checkbox" style="position:relative;padding-left:32px;cursor:pointer;display:block;user-select:none;line-height:25px;">
+                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <span class="custom-check"></span>
+                    <span class="text-muted">{{ __('Zapamti me!') }}</span>
+                </label>
 
                 @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}">
@@ -47,14 +46,14 @@
                 @endif
             </div>
 
-            <button class="w-100 btn btn-primary" type="submit">
+            <button class="w-100 btn button-primary" type="submit">
                 {{ __('Prijavi se') }}
             </button>
         </form>
 
         <div class="text-center mt-4">
             <h6 class="text-muted">{{ __('Nemate nalog?') }}</h6>
-            <a href="{{ route('register') }}" class="w-100 btn btn-outline-secondary">
+            <a href="{{ route('register') }}" class="w-100 btn button-secondary">
                 {{ __('Registruj se!') }}
             </a>
         </div>

@@ -11,6 +11,7 @@ use App\Models\TipSobe;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PutovanjeController extends Controller
 {
@@ -63,11 +64,22 @@ class PutovanjeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    private function saveGalerija(Request $request): array
+    {
+        $paths = [];
+        foreach ($request->file('galerija_slika', []) as $file) {
+            $paths[] = $file->store('putovanja', 'public');
+        }
+        return $paths;
+    }
+
     public function store(StorePutovanjeRequest $request)
     {
         try {
             DB::beginTransaction();
-            $putovanje = Putovanje::create($request->except('termini'));
+            $data = $request->except(['termini', 'galerija_slika']);
+            $data['galerija_slika'] = $this->saveGalerija($request);
+            $putovanje = Putovanje::create($data);
             foreach ($request->input('termini', []) as $termin) {
                 $putovanje->termini()->create([
                     'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
@@ -89,12 +101,21 @@ class PutovanjeController extends Controller
     public function show(string $id)
     {
         $putovanje = Putovanje::with(['drzava', 'hotel', 'tipSobe', 'tipPrevoza'])->findOrFail($id);
-        
-        $tip_sobe = TipSobe::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        return view('putovanje.prikaz', compact('putovanje', 'tip_sobe'));
+
+        $tip_sobe = TipSobe::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
+        $drzave   = Drzava::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
+        $hoteli   = Hotel::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
+        $tip_prevoza = TipPrevoza::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
+
+        $termini = $putovanje->termini->map(fn($t) => [
+            'datum_od'             => $t->datum_od->format('d.m.Y.'),
+            'datum_do'             => $t->datum_do->format('d.m.Y.'),
+            'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
+        ])->toArray();
+
+        $rezervacije = $putovanje->rezervacije()->with('tipSobe')->get();
+
+        return view('putovanje.prikaz', compact('putovanje', 'tip_sobe', 'drzave', 'hoteli', 'tip_prevoza', 'termini', 'rezervacije'));
     }
 
     /**
@@ -134,7 +155,14 @@ class PutovanjeController extends Controller
         try {
             DB::beginTransaction();
             $putovanje = Putovanje::findOrFail($id);
-            $putovanje->update($request->except('termini'));
+            $data = $request->except(['termini', 'galerija_slika']);
+            if ($request->hasFile('galerija_slika')) {
+                foreach ($putovanje->galerija_slika ?? [] as $oldPath) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+                $data['galerija_slika'] = $this->saveGalerija($request);
+            }
+            $putovanje->update($data);
             $putovanje->termini()->delete();
             foreach ($request->input('termini', []) as $termin) {
                 $putovanje->termini()->create([
@@ -164,6 +192,9 @@ class PutovanjeController extends Controller
                 return response()->json(['success' => false, 'message' => 'Ne možete obrisati putovanje koje ima rezervacije!'], 400);
             }
             
+            foreach ($putovanje->galerija_slika ?? [] as $path) {
+                Storage::disk('public')->delete($path);
+            }
             $putovanje->delete();
             return response()->json(['success' => true, 'message' => 'Putovanje je uspešno obrisano!']);
         } catch (\Exception $e) {

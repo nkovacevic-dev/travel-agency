@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="auth-container">
-    <div class="login-card">
-        <div class="text-center mb-4">
-            <div class="logo-placeholder mb-3">
-                <!-- Ovde može logo -->
+    <div class="auth-card">
+        <div class="mb-4">
+            <div class="logo-placeholder">
+                <img src="/images/logo.png" alt="Logo" class="logo-auth">
             </div>
             <h3>{{ __('Resetuj lozinku') }}</h3>
             <p class="text-muted">
@@ -39,7 +39,7 @@
         </form>
 
         <div class="text-center mt-4">
-            <a href="{{ route('login') }}" class="w-100 btn btn-outline-secondary">
+            <a href="{{ route('login') }}" class="w-100 btn button-secondary">
                 {{ __('Nazad na prijavu') }}
             </a>
         </div>

@@ -16,7 +16,7 @@ class Rezervacije extends Model
         'broj_pasosa',
         'adresa',
         'mesto',
-        'drzava',
+        'id_drzave',
         'id_putovanja',
         'id_termina',
         'id_hotela',

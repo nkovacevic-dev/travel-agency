@@ -13,7 +13,7 @@
             @endif
 
              <div class="row">
-                <span>{{ __('Putnik') }}</span>
+                <span><b>{{ __('Podaci o putniku') }}</b></span>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -22,27 +22,27 @@
                 <div class="col-md-4">
                     <x-input-text label="{{ __('Email') }}" name="email" type="email" :value="$rezervacija->email ?? old('email')" :required="true" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <x-input-text label="{{ __('Broj telefona') }}" name="telefon" :value="$rezervacija->telefon ?? old('telefon')" :required="true" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <x-input-text label="{{ __('Broj pasoša') }}" name="broj_pasosa" :value="$rezervacija->broj_pasosa ?? old('broj_pasosa')" :required="true" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <x-input-text label="{{ __('Adresa') }}" name="adresa" :value="$rezervacija->adresa ?? old('adresa')" :required="true" />
+                    <x-input-select label="{{ __('Država') }}" name="id_drzave" :items="$drzave" :value="$rezervacija->id_drzave ?? old('id_drzave')" :emptyOption="true" :required="true" />
                 </div>
                 <div class="col-md-4">
                     <x-input-text label="{{ __('Mesto') }}" name="mesto" :value="$rezervacija->mesto ?? old('mesto')" :required="true" />
                 </div>
                 <div class="col-md-4">
-                    <x-input-text label="{{ __('Država') }}" name="drzava" :value="$rezervacija->drzava ?? old('drzava')" :required="true" />
+                    <x-input-text label="{{ __('Adresa') }}" name="adresa" :value="$rezervacija->adresa ?? old('adresa')" :required="true" />
                 </div>
             </div>
                 
             <div class="row">
-                <span>{{ __('Putovanje') }}</span>
+                <span><b>{{ __('Podaci o putovanju') }}</b></span>
             </div>
             <div class="row">
                 <div class="col-md-4">
