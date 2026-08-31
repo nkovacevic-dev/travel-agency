@@ -123,8 +123,13 @@
         @auth
         <x-tab name="putnici" label="{{ __('Putnici') }}">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Rezervacije</h4>
+                    <a href="{{ route('putovanja.putnici_pdf', $putovanje->id) }}" class="btn button-primary btn-sm" target="_blank">
+                        <i class="fa fa-file-pdf-o me-1"></i> {{ __('PDF') }}
+                    </a>
+                </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive">
                         <table class="table table-striped table-hover mb-0">
                             <thead class="table-light">
                                 <tr>

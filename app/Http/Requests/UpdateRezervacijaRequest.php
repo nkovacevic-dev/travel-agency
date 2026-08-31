@@ -39,4 +39,28 @@ class UpdateRezervacijaRequest extends FormRequest
             'status' => 'nullable|string|in:nova,potvrđena,otkazana',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'puno_ime.required'      => 'Polje ime i prezime je obavezno.',
+            'puno_ime.max'           => 'Polje ime i prezime ne sme biti duže od 255 karaktera.',
+            'telefon.required'       => 'Polje telefon je obavezno.',
+            'email.required'         => 'Polje email je obavezno.',
+            'email.email'            => 'Polje email mora biti ispravna email adresa.',
+            'id_termina.required'    => 'Polje termin je obavezno.',
+            'id_termina.exists'      => 'Izabrani termin ne postoji.',
+            'broj_odraslih.required' => 'Polje broj odraslih je obavezno.',
+            'broj_odraslih.integer'  => 'Polje broj odraslih mora biti ceo broj.',
+            'broj_odraslih.min'      => 'Polje broj odraslih mora biti najmanje 1.',
+            'id_putovanja.required'  => 'Polje putovanje je obavezno.',
+            'id_putovanja.exists'    => 'Izabrano putovanje ne postoji.',
+            'broj_pasosa.required'   => 'Polje broj pasoša je obavezno.',
+            'adresa.required'        => 'Polje adresa je obavezno.',
+            'mesto.required'         => 'Polje mesto je obavezno.',
+            'id_drzave.required'     => 'Polje država je obavezno.',
+            'id_drzave.exists'       => 'Izabrana država ne postoji.',
+            'status.in'              => 'Polje status mora biti: nova, potvrđena ili otkazana.',
+        ];
+    }
 }

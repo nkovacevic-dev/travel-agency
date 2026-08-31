@@ -24,7 +24,6 @@
     </style>
 </head>
 <body>
-<h2>Potvrda rezervacije</h2>
 <p>Poštovani/a <strong>{{ $rezervacija->puno_ime }}</strong>,</p>
 <p>Vaša rezervacija je uspešno primljena. U nastavku su detalji:</p>
 
@@ -41,7 +40,7 @@
     @endif
 </table>
 
-<p>Kontaktiraćemo Vas u najkraćem roku radi potvrde i daljnjih informacija.</p>
+<p>Kontaktiraćemo Vas u najkraćem roku radi potvrde i daljih informacija.</p>
 <p>Hvala na poverenju!<br><strong>{{ config('app.name') }}</strong></p>
 </body>
 </html>

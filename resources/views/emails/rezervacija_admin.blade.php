@@ -25,7 +25,6 @@
 </head>
 
 <body>
-    <h2>Nova rezervacija</h2>
     <p>Stigla je nova rezervacija sa sajta.</p>
 
     <table>

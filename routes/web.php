@@ -20,6 +20,7 @@ Route::middleware(['auth'])->get('/moj-nalog', [KorisnikController::class, 'mojN
 // Admin rute (zahtevaju autentifikaciju)
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Putovanja
+    Route::get('/putovanja/{id}/putnici-pdf', [PutovanjeController::class, 'putnici_pdf'])->name('putovanja.putnici_pdf');
     Route::post('/putovanja/tabela', [PutovanjeController::class, 'tabela'])->name('putovanja.datatable');
     Route::resource('putovanja', PutovanjeController::class)->except(['show'])->parameters(['putovanja' => 'id']);
 

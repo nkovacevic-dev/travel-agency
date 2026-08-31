@@ -182,6 +182,17 @@ class PutovanjeController extends Controller
         }
     }
 
+    public function putnici_pdf(string $id)
+    {
+        $putovanje = Putovanje::with(['drzava', 'tipPrevoza', 'termini'])->findOrFail($id);
+        $rezervacije = $putovanje->rezervacije()->with('tipSobe', 'termin')->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('putovanje.putnici_pdf', compact('putovanje', 'rezervacije'));
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->download('putnici-' . \Str::slug($putovanje->naziv) . '.pdf');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
