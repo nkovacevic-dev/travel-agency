@@ -17,7 +17,7 @@
                     <a class="nav-link" href="#putovanja">Putovanja</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Kontakt</a>
+                    <a class="nav-link" href="#kontakt">Kontakt</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn button-primary" href="{{ route('login') }}">

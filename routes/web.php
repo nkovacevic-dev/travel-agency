@@ -11,6 +11,7 @@ Auth::routes();
 
 // Javne rute (dostupne bez logovanja)
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('pocetna');
+Route::post('/kontakt', [App\Http\Controllers\KontaktController::class, 'posalji'])->name('kontakt.posalji');
 Route::get('/putovanja/{id}', [PutovanjeController::class, 'show'])->name('putovanja.show');
 // Route::post('/rezervacije', [RezervacijeController::class, 'store'])->name('rezervacije.store');
 

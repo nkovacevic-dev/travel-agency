@@ -24,7 +24,7 @@ class HomeController extends Controller
         
         // Javna početna strana
         $putovanja = Putovanje::all();
-        return view('pocetna', compact('putovanja'));
+        return view('pocetna.index', compact('putovanja'));
     }
 
     /**

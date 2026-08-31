@@ -1,12 +1,6 @@
-@extends('layouts.app')
-@section('content')
-
-@include('includes.navbar')
-@include('pocetna.slider')
-
 <section class="py-5" id="putovanja">
     <div class="container">
-        <h2 class="mb-4">Putovanja</h2>
+        <h2 class="mb-4">Putovanja u ponudi</h2>
 
         {{-- 3 kartice u redu --}}
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -38,4 +32,3 @@
         </div>
     </div>
 </section>
-@endsection
