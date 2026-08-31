@@ -1,4 +1,4 @@
-<section id="kontakt" class="py-5">
+<section id="kontakt" class="py-5 bg-lightgrey">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7">
@@ -9,7 +9,7 @@
 
                 @if(session('kontakt_success'))
                     <div class="alert alert-success text-center">
-                        Poruka je uspešno poslata! Odgovorićemo vam u najkraćem roku.
+                        Poruka je uspešno poslata! Odgovorićemo Vam u najkraćem roku.
                     </div>
                 @endif
 
@@ -37,7 +37,7 @@
                     <x-input-text
                         name="telefon"
                         label="Broj telefona"
-                        placeholder="+381 60 000 0000"
+                        placeholder="+381 6X XXX XXXX"
                     />
 
                     <x-input-textarea

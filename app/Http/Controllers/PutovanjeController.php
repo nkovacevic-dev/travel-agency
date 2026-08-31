@@ -12,6 +12,7 @@ use App\Models\TipSobe;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PutovanjeController extends Controller
@@ -72,8 +73,9 @@ class PutovanjeController extends Controller
             $data = $request->except(['termini', 'galerija_slika']);
             $putovanje = Putovanje::create($data);
             foreach ($request->file('galerija_slika', []) as $file) {
-                $path = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
-                $putovanje->slike()->create(['slika' => $path]);
+                $filename = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
+                $filename = basename($filename);
+                $putovanje->slike()->create(['slika' => $filename]);
             }
             foreach ($request->input('termini', []) as $termin) {
                 $putovanje->termini()->create([
@@ -103,6 +105,7 @@ class PutovanjeController extends Controller
         $tip_prevoza = TipPrevoza::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
 
         $termini = $putovanje->termini->map(fn($t) => [
+            'id'                   => $t->id,
             'datum_od'             => $t->datum_od->format('d.m.Y.'),
             'datum_do'             => $t->datum_do->format('d.m.Y.'),
             'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
@@ -110,7 +113,7 @@ class PutovanjeController extends Controller
 
         $rezervacije = $putovanje->rezervacije()->with('tipSobe')->get();
 
-        return view('putovanje.prikaz', compact('putovanje', 'tip_sobe', 'drzave', 'hoteli', 'tip_prevoza', 'termini', 'rezervacije'));
+        return view(Auth::check() ? 'putovanje.prikaz' : 'pocetna.prikaz', compact('putovanje', 'tip_sobe', 'drzave', 'hoteli', 'tip_prevoza', 'termini', 'rezervacije'));
     }
 
     /**
@@ -153,12 +156,13 @@ class PutovanjeController extends Controller
             $data = $request->except(['termini', 'galerija_slika']);
             if ($request->hasFile('galerija_slika')) {
                 foreach ($putovanje->slike as $slika) {
-                    Storage::disk('public')->delete($slika->slika);
+                    Storage::disk('public')->delete('putovanja/' . $putovanje->id . '/slike/' . $slika->slika);
                 }
                 $putovanje->slike()->delete();
                 foreach ($request->file('galerija_slika') as $file) {
-                    $path = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
-                    $putovanje->slike()->create(['slika' => $path]);
+                    $filename = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
+                    $filename = basename($filename);
+                    $putovanje->slike()->create(['slika' => $filename]);
                 }
             }
             $putovanje->update($data);

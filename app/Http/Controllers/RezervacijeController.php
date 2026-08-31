@@ -11,7 +11,8 @@ use App\Models\Drzava;
 use App\Models\TipSobe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\RezervacijaAdminMail;
+use App\Mail\RezervacijaPotvrdaMail;
 
 class RezervacijeController extends Controller
 {
@@ -220,8 +221,10 @@ class RezervacijeController extends Controller
      */
     private function posaljiEmailPotvrde($rezervacija)
     {
-        // TODO: Implementirati slanje email-a
-        // Mail::to($rezervacija->email)->send(new RezervacijaPotvrdaMail($rezervacija));
+        $rezervacija->load(['putovanje', 'termin']);
+
+        Mail::to($rezervacija->email)->send(new RezervacijaPotvrdaMail($rezervacija));
+        Mail::to(config('mail.admin_address'))->send(new RezervacijaAdminMail($rezervacija));
     }
 }
 

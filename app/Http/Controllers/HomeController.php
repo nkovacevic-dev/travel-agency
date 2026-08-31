@@ -23,7 +23,7 @@ class HomeController extends Controller
         }
         
         // Javna početna strana
-        $putovanja = Putovanje::all();
+        $putovanja = Putovanje::with('termini', 'tipPrevoza', 'slike')->get();
         return view('pocetna.index', compact('putovanja'));
     }
 

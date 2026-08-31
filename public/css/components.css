@@ -16,6 +16,11 @@
     margin: 0;
 }
 
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
 
 /* ===== Typography ===== */
 h4 {
@@ -374,4 +379,18 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel) {
 .breadcrumb-item a {
     color: var(--primary) !important;
     text-decoration: none;
+}
+
+h3 {
+    font-size: 20px !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.img-fluid {
+    max-height:400px;
+    object-fit:cover;
+    border-radius:10px;
 }

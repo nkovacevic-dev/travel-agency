@@ -166,6 +166,7 @@
     color: var(--primary) !important;
 }
 
+
 /* ===== Navbar (admin) ===== */
 @media (max-width: 991px) {
     .navbar-scroll {
