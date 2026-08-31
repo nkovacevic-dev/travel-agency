@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container" style="padding-top:80px;">
+    @include('includes.message_alert')
     <div class="mb-3">
         <a href="{{ route('pocetna') }}#putovanja" class="btn button-secondary btn-sm">
             <i class="fa fa-arrow-left me-1"></i> Nazad na putovanja
@@ -87,7 +88,7 @@
                     <small>po osobi</small>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('rezervacije.store') }}" novalidate>
+                    <form method="POST" action="{{ route('rezervacije.store.javno') }}" novalidate>
                         @csrf
                         <input type="hidden" name="id_putovanja" value="{{ $putovanje->id }}">
 

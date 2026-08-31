@@ -11,6 +11,7 @@ use App\Models\Drzava;
 use App\Models\TipSobe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\RezervacijaAdminMail;
 use App\Mail\RezervacijaPotvrdaMail;
 
@@ -105,16 +106,18 @@ class RezervacijeController extends Controller
             if (auth()->check()) {
                 return redirect()->route('rezervacije.index')->with('success', 'Rezervacija je uspešno kreirana!');
             } else {
-                return redirect()->route('pocetna')->with('success', 'Vaša rezervacija je uspešno primljena! Potvda je poslata na Vaš email.');
+                return redirect()->route('putovanja.show', $request->id_putovanja)
+                    ->with('success', 'Vaša rezervacija je uspešno primljena! Potvrda je poslata na Vaš email.');
             }
             
         } catch (\Exception $e) {
             DB::rollback();
-            
+            \Log::error('Greška pri rezervaciji: ' . $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine());
+
             if (auth()->check()) {
                 return redirect()->route('rezervacije.create')->withInput()->with('fail', $e->getMessage());
             } else {
-                return back()->withInput()->with('fail', 'Došlo je do greške pri kreiranju rezervacije. Molimo pokušajte ponovo.');
+                return back()->withInput()->with('fail', $e->getMessage());
             }
         }
     }
