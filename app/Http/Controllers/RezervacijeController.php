@@ -4,19 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRezervacijaRequest;
 use App\Http\Requests\UpdateRezervacijaRequest;
-use App\Models\Rezervacije;
-use App\Models\Putovanje;
-use App\Models\Hotel;
 use App\Models\Drzava;
+use App\Models\Hotel;
+use App\Models\Putovanje;
+use App\Models\Rezervacije;
 use App\Models\TipSobe;
-use Illuminate\Http\Request;
+use App\Services\RezervacijeService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\RezervacijaAdminMail;
-use App\Mail\RezervacijaPotvrdaMail;
+use Illuminate\Support\Facades\Log;
 
 class RezervacijeController extends Controller
 {
+    public function __construct(private RezervacijeService $service) {}
+
+    private function getDropdownData(): array
+    {
+        $toSelect = fn($item) => ['id' => $item->id, 'text' => $item->naziv];
+        return [
+            'putovanja' => Putovanje::all()->map($toSelect)->toArray(),
+            'tip_sobe'  => TipSobe::all()->map($toSelect)->toArray(),
+            'drzave'    => Drzava::orderBy('naziv')->get()->map($toSelect)->toArray(),
+        ];
+    }
     /**
      * Display a listing of the resource (admin).
      */
@@ -47,29 +57,15 @@ class RezervacijeController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource (admin).
-     */
     public function create()
     {
         $rezervacija = new Rezervacije();
-        
-        $putovanja = Putovanje::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        $hoteli = Hotel::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        $tip_sobe = TipSobe::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-
-        $drzave = Drzava::orderBy('naziv')->get()->map(fn($d) => ['id' => $d->id, 'text' => $d->naziv]);
         $termini = [];
-        $hoteli = [];
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini', 'drzave'));
+        $hoteli  = [];
+        return view('rezervacije.forma', array_merge(
+            ['rezervacija' => $rezervacija, 'termini' => $termini, 'hoteli' => $hoteli],
+            $this->getDropdownData()
+        ));
     }
     public function store(StoreRezervacijaRequest $request)
     {
@@ -78,10 +74,7 @@ class RezervacijeController extends Controller
             
             // Izračunaj ukupnu cenu
             $putovanje = Putovanje::findOrFail($request->id_putovanja);
-            $ukupna_cena = $putovanje->cena * $request->broj_odraslih;
-            if ($request->broj_dece) {
-                $ukupna_cena += ($putovanje->cena * 0.5) * $request->broj_dece; // Deca 50% popusta
-            }
+            $ukupna_cena = $this->service->izracunajCenu($putovanje, $request->broj_odraslih, (int) $request->broj_dece);
             
             $data = $request->all();
             $data['ukupna_cena'] = $ukupna_cena;
@@ -94,16 +87,15 @@ class RezervacijeController extends Controller
             
             DB::commit();
 
-            // Pošalji email (opciono)
             try {
-                $this->posaljiEmailPotvrde($rezervacija);
+                $this->service->posaljiEmailPotvrde($rezervacija);
             } catch (\Exception $e) {
                 // Log error ali ne prekidaj proces
-                \Log::error('Greška pri slanju email-a: ' . $e->getMessage());
+                Log::error('Greška pri slanju email-a: ' . $e->getMessage());
             }
 
             // Ako je admin, vrati na listu, ako je javno, vrati poruku uspešnosti
-            if (auth()->check()) {
+            if (Auth::check()) {
                 return redirect()->route('rezervacije.index')->with('success', 'Rezervacija je uspešno kreirana!');
             } else {
                 return redirect()->route('putovanja.show', $request->id_putovanja)
@@ -112,9 +104,9 @@ class RezervacijeController extends Controller
             
         } catch (\Exception $e) {
             DB::rollback();
-            \Log::error('Greška pri rezervaciji: ' . $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine());
+            Log::error('Greška pri rezervaciji: ' . $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine());
 
-            if (auth()->check()) {
+            if (Auth::check()) {
                 return redirect()->route('rezervacije.create')->withInput()->with('fail', $e->getMessage());
             } else {
                 return back()->withInput()->with('fail', $e->getMessage());
@@ -131,28 +123,12 @@ class RezervacijeController extends Controller
         return view('rezervacije.prikaz', compact('rezervacija'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $rezervacija = Rezervacije::findOrFail($id);
-        
-        $putovanja = Putovanje::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        $hoteli = Hotel::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        $tip_sobe = TipSobe::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
 
-        // Pre-populate termini i hoteli za odabrano putovanje
         $termini = [];
-        $hoteli = [];
+        $hoteli  = [];
         if ($rezervacija->id_putovanja) {
             $putovanje = Putovanje::with('termini')->find($rezervacija->id_putovanja);
             if ($putovanje) {
@@ -166,8 +142,10 @@ class RezervacijeController extends Controller
             }
         }
 
-        $drzave = Drzava::orderBy('naziv')->get()->map(fn($d) => ['id' => $d->id, 'text' => $d->naziv]);
-        return view('rezervacije.forma', compact('rezervacija', 'putovanja', 'hoteli', 'tip_sobe', 'termini', 'drzave'));
+        return view('rezervacije.forma', array_merge(
+            ['rezervacija' => $rezervacija, 'termini' => $termini, 'hoteli' => $hoteli],
+            $this->getDropdownData()
+        ));
     }
     public function update(UpdateRezervacijaRequest $request, string $id)
     {
@@ -175,13 +153,8 @@ class RezervacijeController extends Controller
             DB::beginTransaction();
             
             $rezervacija = Rezervacije::findOrFail($id);
-            
-            // Izračunaj ukupnu cenu
-            $putovanje = Putovanje::findOrFail($request->id_putovanja);
-            $ukupna_cena = $putovanje->cena * $request->broj_odraslih;
-            if ($request->broj_dece) {
-                $ukupna_cena += ($putovanje->cena * 0.5) * $request->broj_dece;
-            }
+            $putovanje   = Putovanje::findOrFail($request->id_putovanja);
+            $ukupna_cena = $this->service->izracunajCenu($putovanje, $request->broj_odraslih, (int) $request->broj_dece);
             
             $data = $request->all();
             $data['ukupna_cena'] = $ukupna_cena;
@@ -218,16 +191,4 @@ class RezervacijeController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
-
-    /**
-     * Pošalji email potvrdu.
-     */
-    private function posaljiEmailPotvrde($rezervacija)
-    {
-        $rezervacija->load(['putovanje', 'termin']);
-
-        Mail::to($rezervacija->email)->send(new RezervacijaPotvrdaMail($rezervacija));
-        Mail::to(config('mail.admin_address'))->send(new RezervacijaAdminMail($rezervacija));
-    }
 }
-

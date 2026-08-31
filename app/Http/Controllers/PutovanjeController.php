@@ -5,21 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePutovanjeRequest;
 use App\Models\Drzava;
 use App\Models\Hotel;
-use App\Models\PutovanjaSlike;
 use App\Models\Putovanje;
 use App\Models\TipPrevoza;
 use App\Models\TipSobe;
-use Carbon\Carbon;
+use App\Services\PutovanjeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PutovanjeController extends Controller
 {
+    public function __construct(private PutovanjeService $service) {}
     /**
      * Display a listing of the resource.
      */
+
+    private function getDropdownData(): array
+    {
+        $toSelect = fn($item) => ['id' => $item->id, 'text' => $item->naziv];
+        return [
+            'drzave'      => Drzava::all()->map($toSelect)->toArray(),
+            'hoteli'      => Hotel::all()->map($toSelect)->toArray(),
+            'tip_sobe'    => TipSobe::all()->map($toSelect)->toArray(),
+            'tip_prevoza' => TipPrevoza::all()->map($toSelect)->toArray(),
+        ];
+    }
 
     public function tabela()
     {
@@ -46,21 +58,8 @@ class PutovanjeController extends Controller
     public function create()
     {
         $putovanje = new Putovanje();
-
-        $drzave = Drzava::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $hoteli = Hotel::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $tip_sobe = TipSobe::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $tip_prevoza = TipPrevoza::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $termini = [];
-        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza', 'termini'));
+        $termini   = [];
+        return view('putovanje.forma', array_merge(['putovanje' => $putovanje, 'termini' => $termini], $this->getDropdownData()));
     }
 
     /**
@@ -72,18 +71,8 @@ class PutovanjeController extends Controller
             DB::beginTransaction();
             $data = $request->except(['termini', 'galerija_slika']);
             $putovanje = Putovanje::create($data);
-            foreach ($request->file('galerija_slika', []) as $file) {
-                $filename = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
-                $filename = basename($filename);
-                $putovanje->slike()->create(['slika' => $filename]);
-            }
-            foreach ($request->input('termini', []) as $termin) {
-                $putovanje->termini()->create([
-                    'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
-                    'datum_do' => Carbon::createFromFormat('d.m.Y.', $termin['datum_do']),
-                    'broj_dostupnih_mesta' => $termin['broj_dostupnih_mesta'],
-                ]);
-            }
+            $this->service->sacuvajSlike($putovanje, $request->file('galerija_slika', []));
+            $this->service->sacuvajTermine($putovanje, $request->input('termini', []));
             DB::commit();
             return redirect()->route('putovanja.index')->with('success', __('Putovanje je uspešno uneto!'));
         } catch (\Exception $e) {
@@ -113,7 +102,9 @@ class PutovanjeController extends Controller
 
         $rezervacije = $putovanje->rezervacije()->with('tipSobe')->get();
 
-        return view(Auth::check() ? 'putovanje.prikaz' : 'pocetna.prikaz', compact('putovanje', 'tip_sobe', 'drzave', 'hoteli', 'tip_prevoza', 'termini', 'rezervacije'));
+        return view(Auth::check() ? 'putovanje.prikaz' : 'pocetna.prikaz',
+            array_merge(['putovanje' => $putovanje, 'termini' => $termini, 'rezervacije' => $rezervacije], $this->getDropdownData())
+        );
     }
 
     /**
@@ -122,27 +113,12 @@ class PutovanjeController extends Controller
     public function edit(string $id)
     {
         $putovanje = Putovanje::findOrFail($id);
-        
-        $drzave = Drzava::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $hoteli = Hotel::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $tip_sobe = TipSobe::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        $tip_prevoza = TipPrevoza::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        $termini = $putovanje->termini->map(fn($t) => [
-            'datum_od' => $t->datum_od->format('d.m.Y.'),
-            'datum_do' => $t->datum_do->format('d.m.Y.'),
+        $termini   = $putovanje->termini->map(fn($t) => [
+            'datum_od'             => $t->datum_od->format('d.m.Y.'),
+            'datum_do'             => $t->datum_do->format('d.m.Y.'),
             'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
         ])->toArray();
-
-        return view('putovanje.forma', compact('putovanje', 'drzave', 'hoteli', 'tip_sobe', 'tip_prevoza', 'termini'));
+        return view('putovanje.forma', array_merge(['putovanje' => $putovanje, 'termini' => $termini], $this->getDropdownData()));
     }
 
     /**
@@ -155,25 +131,12 @@ class PutovanjeController extends Controller
             $putovanje = Putovanje::findOrFail($id);
             $data = $request->except(['termini', 'galerija_slika']);
             if ($request->hasFile('galerija_slika')) {
-                foreach ($putovanje->slike as $slika) {
-                    Storage::disk('public')->delete('putovanja/' . $putovanje->id . '/slike/' . $slika->slika);
-                }
-                $putovanje->slike()->delete();
-                foreach ($request->file('galerija_slika') as $file) {
-                    $filename = $file->store('putovanja/' . $putovanje->id . '/slike', 'public');
-                    $filename = basename($filename);
-                    $putovanje->slike()->create(['slika' => $filename]);
-                }
+                $this->service->obrisiSlike($putovanje);
+                $this->service->sacuvajSlike($putovanje, $request->file('galerija_slika'));
             }
             $putovanje->update($data);
             $putovanje->termini()->delete();
-            foreach ($request->input('termini', []) as $termin) {
-                $putovanje->termini()->create([
-                    'datum_od' => Carbon::createFromFormat('d.m.Y.', $termin['datum_od']),
-                    'datum_do' => Carbon::createFromFormat('d.m.Y.', $termin['datum_do']),
-                    'broj_dostupnih_mesta' => $termin['broj_dostupnih_mesta'],
-                ]);
-            }
+            $this->service->sacuvajTermine($putovanje, $request->input('termini', []));
             DB::commit();
             return redirect()->route('putovanja.index')->with('success', __('Putovanje je uspešno ažurirano!'));
         } catch (\Exception $e) {
@@ -184,13 +147,10 @@ class PutovanjeController extends Controller
 
     public function putnici_pdf(string $id)
     {
-        $putovanje = Putovanje::with(['drzava', 'tipPrevoza', 'termini'])->findOrFail($id);
+        $putovanje   = Putovanje::with(['drzava', 'tipPrevoza', 'termini'])->findOrFail($id);
         $rezervacije = $putovanje->rezervacije()->with('tipSobe', 'termin')->get();
-
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('putovanje.putnici_pdf', compact('putovanje', 'rezervacije'));
-        $pdf->setPaper('A4', 'landscape');
-
-        return $pdf->download('putnici-' . \Str::slug($putovanje->naziv) . '.pdf');
+        return $this->service->generisiPdfPutnici($putovanje, $rezervacije)
+                             ->download('putnici-' . Str::slug($putovanje->naziv) . '.pdf');
     }
 
     /**

@@ -43,11 +43,6 @@ class Putovanje extends Model
         return $this->belongsTo(Hotel::class, 'id_hotela');
     }
 
-    public function tipSobe()
-    {
-        return $this->belongsTo(TipSobe::class, 'id_tip_sobe');
-    }
-
     public function tipPrevoza()
     {
         return $this->belongsTo(TipPrevoza::class, 'id_tip_prevoza');

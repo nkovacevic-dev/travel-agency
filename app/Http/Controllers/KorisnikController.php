@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreKorisnikRequest;
+use App\Http\Requests\UpdateKorisnikRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KorisnikController extends Controller
 {
@@ -43,7 +44,7 @@ class KorisnikController extends Controller
 
     public function mojNalog()
     {
-        $korisnik = auth()->user();
+        $korisnik = Auth::user();
         $redirectTo = 'pocetna';
         return view('korisnik.forma', compact('korisnik', 'redirectTo'));
     }
@@ -60,14 +61,8 @@ class KorisnikController extends Controller
         return view('korisnik.forma', compact('korisnik'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateKorisnikRequest $request, string $id)
     {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
         $korisnik = User::findOrFail($id);
         $korisnik->name  = $request->name;
         $korisnik->email = $request->email;
@@ -79,7 +74,7 @@ class KorisnikController extends Controller
         $korisnik->save();
 
         $redirectTo = $request->input('_redirect', 'korisnici.index');
-        $message = $redirectTo === 'pocetna' ? 'Nalog je uspešno izmenjen!' : 'Korisnik je uspešno izmenjen!';
+        $message    = $redirectTo === 'pocetna' ? 'Nalog je uspešno izmenjen!' : 'Korisnik je uspešno izmenjen!';
 
         return redirect()->route($redirectTo)->with('success', $message);
     }

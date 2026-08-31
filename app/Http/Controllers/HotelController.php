@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreHotelRequest;
 use App\Models\Drzava;
 use App\Models\Hotel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private function getDropdownData(): array
+    {
+        return [
+            'drzave' => Drzava::all()->map(fn($i) => ['id' => $i->id, 'text' => $i->naziv])->toArray(),
+        ];
+    }
 
     public function poDrzavi(string $id)
     {
@@ -41,11 +43,7 @@ class HotelController extends Controller
     public function create()
     {
         $hotel = new Hotel();
-
-        $drzave = Drzava::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        return view('hotel.forma', compact('hotel', 'drzave'));
+        return view('hotel.forma', array_merge(['hotel' => $hotel], $this->getDropdownData()));
     }
 
     /**
@@ -78,12 +76,7 @@ class HotelController extends Controller
     public function edit(string $id)
     {
         $hotel = Hotel::findOrFail($id);
-        
-        $drzave = Drzava::all()->map(function ($item) {
-            return ['id' => $item->id, 'text' => $item->naziv];
-        });
-        
-        return view('hotel.forma', compact('hotel', 'drzave'));
+        return view('hotel.forma', array_merge(['hotel' => $hotel], $this->getDropdownData()));
     }
 
     /**
