@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusRezervacije;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,6 +44,7 @@ class Rezervacija extends Model
         'broj_odraslih' => 'integer',
         'broj_dece' => 'integer',
         'ukupna_cena' => 'decimal:2',
+        'status' => StatusRezervacije::class,
     ];
 
     // Relacije

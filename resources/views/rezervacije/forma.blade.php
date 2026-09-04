@@ -74,9 +74,9 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-select">
-                            <option value="nova" {{ ($rezervacija->status ?? 'nova') == 'nova' ? 'selected' : '' }}>Nova</option>
-                            <option value="potvrđena" {{ ($rezervacija->status ?? '') == 'potvrđena' ? 'selected' : '' }}>Potvrđena</option>
-                            <option value="otkazana" {{ ($rezervacija->status ?? '') == 'otkazana' ? 'selected' : '' }}>Otkazana</option>
+                            @foreach(\App\Enums\StatusRezervacije::cases() as $opcija)
+                            <option value="{{ $opcija->value }}" {{ ($rezervacija->status ?? \App\Enums\StatusRezervacije::Nova) === $opcija ? 'selected' : '' }}>{{ $opcija->label() }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

@@ -58,8 +58,8 @@
             <td>{{ $rez->broj_dece ?? 0 }}</td>
             <td>{{ $rez->tipSobe->naziv ?? '—' }}</td>
             <td>
-                <span class="badge {{ $rez->status === 'potvrđena' ? 'badge-potv' : ($rez->status === 'otkazana' ? 'badge-otk' : 'badge-nova') }}">
-                    {{ $rez->status }}
+                <span class="badge {{ $rez->status === \App\Enums\StatusRezervacije::Potvrdjena ? 'badge-potv' : ($rez->status === \App\Enums\StatusRezervacije::Otkazana ? 'badge-otk' : 'badge-nova') }}">
+                    {{ $rez->status->label() }}
                 </span>
             </td>
             <td>{{ number_format($rez->ukupna_cena, 2) }} €</td>

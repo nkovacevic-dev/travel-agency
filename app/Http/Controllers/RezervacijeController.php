@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusRezervacije;
 use App\Http\Requests\StoreRezervacijaRequest;
 use App\Http\Requests\UpdateRezervacijaRequest;
 use App\Models\Drzava;
@@ -10,26 +11,22 @@ use App\Models\Putovanje;
 use App\Models\Rezervacija;
 use App\Models\Termin;
 use App\Models\TipSobe;
-use App\Services\PravilaService;
 use App\Services\RezervacijaService;
+use App\Support\SelectOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RezervacijeController extends Controller
 {
-    public function __construct(
-        private RezervacijaService $service,
-        private PravilaService $pravila
-    ) {}
+    public function __construct(private RezervacijaService $service) {}
 
     private function getDropdownData(): array
     {
-        $toSelect = fn($item) => ['id' => $item->id, 'text' => $item->naziv];
         return [
-            'putovanja' => Putovanje::all()->map($toSelect)->toArray(),
-            'tip_sobe'  => TipSobe::all()->map($toSelect)->toArray(),
-            'drzave'    => Drzava::orderBy('naziv')->get()->map($toSelect)->toArray(),
+            'putovanja' => SelectOptions::odNaziva(Putovanje::all()),
+            'tip_sobe'  => SelectOptions::odNaziva(TipSobe::all()),
+            'drzave'    => SelectOptions::odNaziva(Drzava::orderBy('naziv')->get()),
         ];
     }
     /**
@@ -77,26 +74,12 @@ class RezervacijeController extends Controller
         try {
             DB::beginTransaction();
 
-            // Poslovna pravila iz JSON konfiguracije
             $brojOdraslih = (int) $request->broj_odraslih;
             $brojDece     = (int) $request->broj_dece;
+            $this->service->proveriBrojPutnika($brojOdraslih, $brojDece);
 
-            if ($brojOdraslih > $this->pravila->maxOdraslih()) {
-                throw new \InvalidArgumentException("Maksimalan broj odraslih putnika je {$this->pravila->maxOdraslih()}.");
-            }
-            if ($brojDece > $this->pravila->maxDece()) {
-                throw new \InvalidArgumentException("Maksimalan broj dece je {$this->pravila->maxDece()}.");
-            }
-            if (($brojOdraslih + $brojDece) > $this->pravila->maxUkupnoPutnika()) {
-                throw new \InvalidArgumentException("Maksimalan ukupan broj putnika je {$this->pravila->maxUkupnoPutnika()}.");
-            }
-
-            $termin  = Termin::findOrFail($request->id_termina);
-            $danaDo  = (int) now()->diffInDays($termin->datum_od, false);
-            $minDana = $this->pravila->minDanaUnapred();
-            if ($danaDo < $minDana) {
-                throw new \InvalidArgumentException("Rezervacija mora biti napravljena najmanje {$minDana} dana pre polaska.");
-            }
+            $termin = Termin::findOrFail($request->id_termina);
+            $this->service->proveriMinDanaPrePolaska($termin);
 
             // Izračunaj ukupnu cenu
             $putovanje = Putovanje::findOrFail($request->id_putovanja);
@@ -104,7 +87,7 @@ class RezervacijeController extends Controller
             
             $data = $request->all();
             $data['ukupna_cena'] = $ukupna_cena;
-            $data['status'] = 'nova';
+            $data['status'] = StatusRezervacije::Nova;
             
             $rezervacija = Rezervacija::create($data);
             
@@ -162,9 +145,7 @@ class RezervacijeController extends Controller
                     'id'   => $t->id,
                     'text' => $t->datum_od->format('d.m.Y.') . ' – ' . $t->datum_do->format('d.m.Y.'),
                 ])->toArray();
-                $hoteli = Hotel::where('id_drzave', $putovanje->id_drzave)->get()->map(fn($h) => [
-                    'id' => $h->id, 'text' => $h->naziv,
-                ])->toArray();
+                $hoteli = SelectOptions::odNaziva(Hotel::where('id_drzave', $putovanje->id_drzave)->get());
             }
         }
 
@@ -178,19 +159,9 @@ class RezervacijeController extends Controller
         try {
             DB::beginTransaction();
 
-            // Poslovna pravila iz JSON konfiguracije
             $brojOdraslih = (int) $request->broj_odraslih;
             $brojDece     = (int) $request->broj_dece;
-
-            if ($brojOdraslih > $this->pravila->maxOdraslih()) {
-                throw new \InvalidArgumentException("Maksimalan broj odraslih putnika je {$this->pravila->maxOdraslih()}.");
-            }
-            if ($brojDece > $this->pravila->maxDece()) {
-                throw new \InvalidArgumentException("Maksimalan broj dece je {$this->pravila->maxDece()}.");
-            }
-            if (($brojOdraslih + $brojDece) > $this->pravila->maxUkupnoPutnika()) {
-                throw new \InvalidArgumentException("Maksimalan ukupan broj putnika je {$this->pravila->maxUkupnoPutnika()}.");
-            }
+            $this->service->proveriBrojPutnika($brojOdraslih, $brojDece);
 
             $rezervacija = Rezervacija::findOrFail($id);
             $putovanje   = Putovanje::findOrFail($request->id_putovanja);
@@ -216,14 +187,12 @@ class RezervacijeController extends Controller
     {
         $rezervacija = Rezervacija::with(['putovanje', 'termin'])->where('cancel_token', $token)->firstOrFail();
 
-        if ($rezervacija->status === 'otkazana') {
+        if ($rezervacija->status === StatusRezervacije::Otkazana) {
             return view('rezervacije.otkazivanje.putnik_otkazivanje', ['rezervacija' => $rezervacija, 'vec_otkazana' => true, 'povratnaCena' => 0]);
         }
 
-        $danaPre       = max(0, (int) now()->diffInDays($rezervacija->termin->datum_od, false));
-        $kaznaProcenat = $this->pravila->kaznaOtkazivanja($danaPre);
-        $kaznaCena     = round($rezervacija->ukupna_cena * $kaznaProcenat / 100, 2);
-        $povratnaCena  = round($rezervacija->ukupna_cena - $kaznaCena, 2);
+        ['danaPre' => $danaPre, 'kaznaProcenat' => $kaznaProcenat, 'kaznaCena' => $kaznaCena, 'povratnaCena' => $povratnaCena]
+            = $this->service->izracunajOtkazivanje($rezervacija);
 
         return view('rezervacije.otkazivanje.putnik_otkazivanje', compact(
             'rezervacija', 'token', 'danaPre', 'kaznaProcenat', 'kaznaCena', 'povratnaCena'
@@ -235,17 +204,14 @@ class RezervacijeController extends Controller
     {
         $rezervacija = Rezervacija::with('putovanje')->where('cancel_token', $token)->firstOrFail();
 
-        if ($rezervacija->status === 'otkazana') {
+        if ($rezervacija->status === StatusRezervacije::Otkazana) {
             return redirect()->route('rezervacije.javno.otkazivanje', $token)
                 ->with('info', 'Ova rezervacija je već otkazana.');
         }
 
-        $danaPre      = max(0, (int) now()->diffInDays($rezervacija->termin->datum_od, false));
-        $kaznaProcenat = $this->pravila->kaznaOtkazivanja($danaPre);
-        $kaznaCena    = round($rezervacija->ukupna_cena * $kaznaProcenat / 100, 2);
-        $povratnaCena = round($rezervacija->ukupna_cena - $kaznaCena, 2);
+        ['povratnaCena' => $povratnaCena] = $this->service->izracunajOtkazivanje($rezervacija);
 
-        $rezervacija->update(['status' => 'otkazana']);
+        $rezervacija->update(['status' => StatusRezervacije::Otkazana]);
 
         if ($rezervacija->putovanje) {
             $rezervacija->putovanje->decrement('broj_rezervacija');
@@ -260,10 +226,8 @@ class RezervacijeController extends Controller
     public function otkazivanje(string $id)
     {
         $rezervacija  = Rezervacija::with(['putovanje', 'termin'])->findOrFail($id);
-        $danaPre      = max(0, (int) now()->diffInDays($rezervacija->termin->datum_od, false));
-        $kaznaProcenat = $this->pravila->kaznaOtkazivanja($danaPre);
-        $kaznaCena    = round($rezervacija->ukupna_cena * $kaznaProcenat / 100, 2);
-        $povratnaCena = round($rezervacija->ukupna_cena - $kaznaCena, 2);
+        ['danaPre' => $danaPre, 'kaznaProcenat' => $kaznaProcenat, 'kaznaCena' => $kaznaCena, 'povratnaCena' => $povratnaCena]
+            = $this->service->izracunajOtkazivanje($rezervacija);
 
         return view('rezervacije.otkazivanje.admin_otkazivanje', compact(
             'rezervacija', 'danaPre', 'kaznaProcenat', 'kaznaCena', 'povratnaCena'
@@ -274,7 +238,7 @@ class RezervacijeController extends Controller
     public function potvrdiOtkazivanje(string $id)
     {
         $rezervacija = Rezervacija::findOrFail($id);
-        $rezervacija->update(['status' => 'otkazana']);
+        $rezervacija->update(['status' => StatusRezervacije::Otkazana]);
 
         if ($rezervacija->putovanje) {
             $rezervacija->putovanje->decrement('broj_rezervacija');

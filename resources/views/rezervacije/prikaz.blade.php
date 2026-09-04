@@ -62,8 +62,8 @@
                     <tr>
                         <th>Status:</th>
                         <td>
-                            <span class="badge bg-{{ $rezervacija->status == 'potvrđena' ? 'success' : ($rezervacija->status == 'otkazana' ? 'danger' : 'warning') }}">
-                                {{ ucfirst($rezervacija->status ?? 'nova') }}
+                            <span class="badge bg-{{ $rezervacija->status->boja() }}">
+                                {{ $rezervacija->status->label() }}
                             </span>
                         </td>
                     </tr>

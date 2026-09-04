@@ -161,8 +161,8 @@
                                     <td>{{ $rez->putovanje->naziv ?? 'N/A' }}</td>
                                     <td>{{ $rez->created_at->format('d.m.Y') }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $rez->status == 'potvrđena' ? 'success' : ($rez->status == 'otkazana' ? 'danger' : 'warning') }}">
-                                            {{ ucfirst($rez->status ?? 'nova') }}
+                                        <span class="badge bg-{{ $rez->status->boja() }}">
+                                            {{ $rez->status->label() }}
                                         </span>
                                     </td>
                                 </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreHotelRequest;
 use App\Models\Drzava;
 use App\Models\Hotel;
+use App\Support\SelectOptions;
 use Illuminate\Support\Facades\DB;
 
 class HotelController extends Controller
@@ -12,13 +13,13 @@ class HotelController extends Controller
     private function getDropdownData(): array
     {
         return [
-            'drzave' => Drzava::all()->map(fn($i) => ['id' => $i->id, 'text' => $i->naziv])->toArray(),
+            'drzave' => SelectOptions::odNaziva(Drzava::all()),
         ];
     }
 
     public function poDrzavi(string $id)
     {
-        return Hotel::where('id_drzave', $id)->get()->map(fn($h) => ['id' => $h->id, 'text' => $h->naziv]);
+        return SelectOptions::odNaziva(Hotel::where('id_drzave', $id)->get());
     }
 
     public function tabela()

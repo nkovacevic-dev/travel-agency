@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\StatusRezervacije;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateRezervacijaRequest extends FormRequest
 {
@@ -37,7 +39,7 @@ class UpdateRezervacijaRequest extends FormRequest
             'id_putovanja' => 'required|exists:putovanje,id',
             'id_hotela' => 'nullable|exists:hotel,id',
             'id_tip_sobe' => 'nullable|exists:tip_sobe,id',
-            'status' => 'nullable|string|in:nova,potvrđena,otkazana',
+            'status' => ['nullable', Rule::enum(StatusRezervacije::class)],
         ];
     }
 

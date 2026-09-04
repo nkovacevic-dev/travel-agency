@@ -9,6 +9,7 @@ use App\Models\Putovanje;
 use App\Models\TipPrevoza;
 use App\Models\TipSobe;
 use App\Services\PutovanjeService;
+use App\Support\SelectOptions;
 use App\ViewModels\PutovanjeViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +26,11 @@ class PutovanjeController extends Controller
 
     private function getDropdownData(): array
     {
-        $toSelect = fn($item) => ['id' => $item->id, 'text' => $item->naziv];
         return [
-            'drzave'      => Drzava::all()->map($toSelect)->toArray(),
-            'hoteli'      => Hotel::all()->map($toSelect)->toArray(),
-            'tip_sobe'    => TipSobe::all()->map($toSelect)->toArray(),
-            'tip_prevoza' => TipPrevoza::all()->map($toSelect)->toArray(),
+            'drzave'      => SelectOptions::odNaziva(Drzava::all()),
+            'hoteli'      => SelectOptions::odNaziva(Hotel::all()),
+            'tip_sobe'    => SelectOptions::odNaziva(TipSobe::all()),
+            'tip_prevoza' => SelectOptions::odNaziva(TipPrevoza::all()),
         ];
     }
 

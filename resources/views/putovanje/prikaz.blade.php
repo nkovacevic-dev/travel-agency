@@ -156,8 +156,8 @@
                                     <td class="text-center">{{ $rez->broj_dece }}</td>
                                     <td>{{ $rez->tipSobe->naziv ?? '-' }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $rez->status === 'potvrđena' ? 'success' : ($rez->status === 'otkazana' ? 'danger' : 'warning') }}">
-                                            {{ $rez->status }}
+                                        <span class="badge bg-{{ $rez->status->boja() }}">
+                                            {{ $rez->status->label() }}
                                         </span>
                                     </td>
                                     <td>{{ $rez->ukupna_cena ? number_format($rez->ukupna_cena, 2) . ' €' : '-' }}</td>
