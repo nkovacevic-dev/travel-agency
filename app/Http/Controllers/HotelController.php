@@ -23,8 +23,8 @@ class HotelController extends Controller
 
     public function tabela()
     {
-        $hoteli = Hotel::select('hotels.*', 'drzavas.naziv as naziv_drzave')
-        ->leftJoin('drzavas', 'drzavas.id', 'hotels.id_drzave');
+        $hoteli = Hotel::select('hotel.*', 'drzava.naziv as naziv_drzave')
+        ->leftJoin('drzava', 'drzava.id', 'hotel.id_drzave');
 
         return datatables()->of($hoteli)
         ->addColumn('akcija', 'hotel.dt.kolona_akcije')

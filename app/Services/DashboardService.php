@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Putovanje;
-use App\Models\Rezervacije;
+use App\Models\Rezervacija;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
@@ -24,16 +24,16 @@ class DashboardService
 
     private function rezervacijeMesec(): int
     {
-        return Rezervacije::whereMonth('created_at', now()->month)
+        return Rezervacija::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
     }
 
     private function prihodMesec(): float
     {
-        return Rezervacije::whereMonth('created_at', now()->month)
+        return Rezervacija::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
-            ->where('status', '!=', 'otkazana')
+            ->where('status', 'potvrđena')
             ->sum('ukupna_cena');
     }
 
@@ -44,13 +44,13 @@ class DashboardService
 
     private function ukupnoPutnika(): int
     {
-        return Rezervacije::where('status', '!=', 'otkazana')
+        return Rezervacija::where('status', '!=', 'otkazana')
             ->sum(DB::raw('broj_odraslih + broj_dece'));
     }
 
     private function rezervacijePoMesecima()
     {
-        return Rezervacije::selectRaw('DATE_FORMAT(created_at, "%b %Y") as mesec, COUNT(*) as broj')
+        return Rezervacija::selectRaw('DATE_FORMAT(created_at, "%b %Y") as mesec, COUNT(*) as broj')
             ->where('created_at', '>=', now()->subMonths(6))
             ->groupBy('mesec')
             ->orderBy(DB::raw('MIN(created_at)'))
@@ -60,22 +60,22 @@ class DashboardService
     private function statusStats(): array
     {
         return [
-            'nova'      => Rezervacije::where('status', 'nova')->count(),
-            'potvrđena' => Rezervacije::where('status', 'potvrđena')->count(),
-            'otkazana'  => Rezervacije::where('status', 'otkazana')->count(),
+            'nova'      => Rezervacija::where('status', 'nova')->count(),
+            'potvrđena' => Rezervacija::where('status', 'potvrđena')->count(),
+            'otkazana'  => Rezervacija::where('status', 'otkazana')->count(),
         ];
     }
 
     private function topDestinacije()
     {
         return Putovanje::select(
-                'putovanjas.naziv',
-                DB::raw('COUNT(rezervacijes.id) as broj_rezervacija'),
-                DB::raw('SUM(rezervacijes.ukupna_cena) as ukupan_prihod')
+                'putovanje.naziv',
+                DB::raw('COUNT(rezervacija.id) as broj_rezervacija'),
+                DB::raw('SUM(rezervacija.ukupna_cena) as ukupan_prihod')
             )
-            ->join('rezervacijes', 'putovanjas.id', '=', 'rezervacijes.id_putovanja')
-            ->where('rezervacijes.status', '!=', 'otkazana')
-            ->groupBy('putovanjas.id', 'putovanjas.naziv')
+            ->join('rezervacija', 'putovanje.id', '=', 'rezervacija.id_putovanja')
+            ->where('rezervacija.status', '!=', 'otkazana')
+            ->groupBy('putovanje.id', 'putovanje.naziv')
             ->orderBy('broj_rezervacija', 'desc')
             ->limit(5)
             ->get();
@@ -83,7 +83,7 @@ class DashboardService
 
     private function nedavneRezervacije()
     {
-        return Rezervacije::with('putovanje')
+        return Rezervacija::with('putovanje')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();

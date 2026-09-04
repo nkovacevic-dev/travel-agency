@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Putovanje extends Model
 {
     use HasFactory;
-    protected $table = 'putovanjas';
+    protected $table = 'putovanje';
     protected $fillable = [
         'naziv',
         'id_drzave',
@@ -55,11 +55,11 @@ class Putovanje extends Model
 
     public function rezervacije()
     {
-        return $this->hasMany(Rezervacije::class, 'id_putovanja');
+        return $this->hasMany(Rezervacija::class, 'id_putovanja');
     }
 
     public function slike()
     {
-        return $this->hasMany(PutovanjaSlike::class, 'id_putovanja');
+        return $this->hasMany(PutovanjeSlika::class, 'id_putovanja');
     }
 }

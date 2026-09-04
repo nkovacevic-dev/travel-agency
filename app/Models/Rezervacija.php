@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rezervacije extends Model
+class Rezervacija extends Model
 {
     use HasFactory;
+
+    protected $table = 'rezervacija';
 
     protected $fillable = [
         'puno_ime',
@@ -26,7 +28,16 @@ class Rezervacije extends Model
         'status',
         'napomena',
         'ukupna_cena',
+        'cancel_token',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->cancel_token ??= \Illuminate\Support\Str::uuid()->toString();
+        });
+    }
 
     protected $casts = [
         'broj_odraslih' => 'integer',

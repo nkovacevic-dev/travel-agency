@@ -41,6 +41,17 @@
 </table>
 
 <p>Kontaktiraćemo Vas u najkraćem roku radi potvrde i daljih informacija.</p>
+
+@if($rezervacija->cancel_token)
+<p style="margin-top:24px;">
+    <a href="{{ route('rezervacije.javno.otkazivanje', $rezervacija->cancel_token) }}"
+       style="display:inline-block;padding:10px 20px;background-color:#dc3545;color:#fff;text-decoration:none;border-radius:4px;font-size:14px;">
+        Otkaži rezervaciju
+    </a>
+</p>
+<p style="font-size:12px;color:#888;">Link za otkazivanje je jedinstven i važi samo za ovu rezervaciju.</p>
+@endif
+
 <p>Hvala na poverenju!<br><strong>{{ config('app.name') }}</strong></p>
 </body>
 </html>

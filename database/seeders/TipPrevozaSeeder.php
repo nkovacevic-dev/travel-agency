@@ -18,6 +18,6 @@ class TipPrevozaSeeder extends Seeder
             ['naziv' => 'Avion'],
         ];
 
-        DB::table('tip_prevozas')->insert($tipovi);
+        DB::table('tip_prevoza')->insert($tipovi);
     }
 }

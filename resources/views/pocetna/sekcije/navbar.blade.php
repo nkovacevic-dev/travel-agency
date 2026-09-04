@@ -1,5 +1,5 @@
 <!-- Navbar za početnu stranicu -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="main-navbar">
+<nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="logo-placeholder">
             <img src="/images/logo-sidebar2.png" alt="Logo" class="logo logo-pocetna">

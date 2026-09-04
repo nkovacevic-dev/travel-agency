@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('rezervacijes', function (Blueprint $table) {
+        Schema::table('rezervacija', function (Blueprint $table) {
             $table->string('broj_pasosa', 50)->nullable()->change();
             $table->string('adresa', 255)->nullable()->change();
             $table->string('mesto', 100)->nullable()->change();
@@ -21,7 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('rezervacijes', function (Blueprint $table) {
+        Schema::table('rezervacija', function (Blueprint $table) {
             $table->string('broj_pasosa', 50)->nullable(false)->change();
             $table->string('adresa', 255)->nullable(false)->change();
             $table->string('mesto', 100)->nullable(false)->change();

@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('tip_sobes', function (Blueprint $table) {
+        Schema::create('termini', function (Blueprint $table) {
             $table->id();
-            $table->string('naziv');
+            $table->foreignId('id_putovanja')->constrained('putovanje')->onDelete('cascade');
+            $table->date('datum_od');
+            $table->date('datum_do');
+            $table->integer('broj_dostupnih_mesta');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('tip_sobes');
+        Schema::dropIfExists('termini');
     }
 };

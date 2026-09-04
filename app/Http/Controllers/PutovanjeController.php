@@ -9,6 +9,7 @@ use App\Models\Putovanje;
 use App\Models\TipPrevoza;
 use App\Models\TipSobe;
 use App\Services\PutovanjeService;
+use App\ViewModels\PutovanjeViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -36,9 +37,9 @@ class PutovanjeController extends Controller
     public function tabela()
     {
         $query = Putovanje::with('termini')
-            ->select('putovanjas.*', 'drzavas.naziv as naziv_drzave', 'tip_prevozas.naziv as naziv_prevoza')
-            ->leftJoin('drzavas', 'drzavas.id', 'putovanjas.id_drzave')
-            ->leftJoin('tip_prevozas', 'tip_prevozas.id', 'putovanjas.id_tip_prevoza');
+            ->select('putovanje.*', 'drzava.naziv as naziv_drzave', 'tip_prevoza.naziv as naziv_prevoza')
+            ->leftJoin('drzava', 'drzava.id', 'putovanje.id_drzave')
+            ->leftJoin('tip_prevoza', 'tip_prevoza.id', 'putovanje.id_tip_prevoza');
 
         return datatables()->of($query)
             ->addColumn('termini', 'putovanje.dt.kolona_termini')
@@ -86,13 +87,15 @@ class PutovanjeController extends Controller
      */
     public function show(string $id)
     {
-        $putovanje = Putovanje::with(['drzava', 'hotel', 'tipSobe', 'tipPrevoza', 'slike'])->findOrFail($id);
+        $putovanje = Putovanje::with(['drzava', 'hotel', 'tipPrevoza', 'slike'])->findOrFail($id);
 
-        $tip_sobe = TipSobe::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
-        $drzave   = Drzava::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
-        $hoteli   = Hotel::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
-        $tip_prevoza = TipPrevoza::all()->map(fn($item) => ['id' => $item->id, 'text' => $item->naziv]);
+        if (!Auth::check()) {
+            return view('pocetna.prikaz', [
+                'viewModel' => new PutovanjeViewModel($putovanje),
+            ]);
+        }
 
+        $rezervacije = $putovanje->rezervacije()->with('tipSobe')->get();
         $termini = $putovanje->termini->map(fn($t) => [
             'id'                   => $t->id,
             'datum_od'             => $t->datum_od->format('d.m.Y.'),
@@ -100,9 +103,7 @@ class PutovanjeController extends Controller
             'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
         ])->toArray();
 
-        $rezervacije = $putovanje->rezervacije()->with('tipSobe')->get();
-
-        return view(Auth::check() ? 'putovanje.prikaz' : 'pocetna.prikaz',
+        return view('putovanje.prikaz',
             array_merge(['putovanje' => $putovanje, 'termini' => $termini, 'rezervacije' => $rezervacije], $this->getDropdownData())
         );
     }

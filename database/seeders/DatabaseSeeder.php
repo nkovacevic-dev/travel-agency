@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Korisnik;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,10 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Korisnik::factory(10)->create();
 
         $this->call([
-            UserSeeder::class,
+            KorisnikSeeder::class,
             DrzaveSeeder::class,
             TipPrevozaSeeder::class,
             TipSobeSeeder::class,

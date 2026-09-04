@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('rezervacijes', function (Blueprint $table) {
-            $table->string('status')->default('nova')->after('id_tip_sobe');
-            $table->decimal('ukupna_cena', 10, 2)->default(0)->after('status');
+        Schema::create('tip_prevoza', function (Blueprint $table) {
+            $table->id();
+            $table->string('naziv');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('rezervacijes', function (Blueprint $table) {
-            $table->dropColumn(['status', 'ukupna_cena']);
-        });
+        Schema::dropIfExists('tip_prevoza');
     }
 };

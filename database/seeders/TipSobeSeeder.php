@@ -20,6 +20,6 @@ class TipSobeSeeder extends Seeder
             ['naziv' => 'Četvorokrevetna'],
         ];
 
-        DB::table('tip_sobes')->insert($tipovi);
+        DB::table('tip_sobe')->insert($tipovi);
     }
 }

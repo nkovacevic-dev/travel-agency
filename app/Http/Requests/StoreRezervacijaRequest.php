@@ -28,14 +28,14 @@ class StoreRezervacijaRequest extends FormRequest
             'broj_pasosa' => [$this->user() ? 'required' : 'nullable', 'string', 'max:50'],
             'adresa'      => [$this->user() ? 'required' : 'nullable', 'string', 'max:255'],
             'mesto'       => [$this->user() ? 'required' : 'nullable', 'string', 'max:100'],
-            'id_drzave'   => [$this->user() ? 'required' : 'nullable', 'exists:drzavas,id'],
+            'id_drzave'   => [$this->user() ? 'required' : 'nullable', 'exists:drzava,id'],
             'id_termina' => 'required|exists:terminis,id',
             'broj_odraslih' => 'required|integer|min:1',
             'broj_dece' => 'nullable|integer|min:0',
             'napomena' => 'nullable|string|max:1000',
-            'id_putovanja' => 'required|exists:putovanjas,id',
-            'id_hotela' => 'nullable|exists:hotels,id',
-            'id_tip_sobe' => 'nullable|exists:tip_sobes,id',
+            'id_putovanja' => 'required|exists:putovanje,id',
+            'id_hotela' => 'nullable|exists:hotel,id',
+            'id_tip_sobe' => 'nullable|exists:tip_sobe,id',
         ];
     }
 

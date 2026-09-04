@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('putovanjas', function (Blueprint $table) {
+        Schema::create('putovanje', function (Blueprint $table) {
             $table->id();
             $table->string('naziv');
-            $table->foreignId('id_drzave')->constrained('drzavas')->onDelete('restrict');
+            $table->foreignId('id_drzave')->constrained('drzava')->onDelete('restrict');
             $table->string('grad');
-            $table->date('datum_od');
-            $table->date('datum_do');
+            $table->date('datum_od')->nullable();
+            $table->date('datum_do')->nullable();
             $table->integer('broj_dana');
             $table->integer('broj_nocenja');
-            $table->integer('broj_dostupnih_mesta');
+            $table->integer('broj_dostupnih_mesta')->nullable();
             $table->integer('broj_rezervacija')->default(0);
             $table->decimal('cena', 10, 2);
-            $table->foreignId('id_hotela')->nullable()->constrained('hotels')->onDelete('restrict');
-            $table->foreignId('id_tip_prevoza')->constrained('tip_prevozas')->onDelete('restrict');
+            $table->foreignId('id_hotela')->nullable()->constrained('hotel')->onDelete('restrict');
+            $table->foreignId('id_tip_prevoza')->constrained('tip_prevoza')->onDelete('restrict');
             $table->string('prevoznik')->nullable();
             $table->text('program_putovanja');
             $table->text('fakultativni_izleti')->nullable();
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('putovanjas');
+        Schema::dropIfExists('putovanje');
     }
 };

@@ -29,14 +29,14 @@ class UpdateRezervacijaRequest extends FormRequest
             'broj_pasosa' => 'required|string|max:50',
             'adresa' => 'required|string|max:255',
             'mesto' => 'required|string|max:100',
-            'id_drzave' => 'required|exists:drzavas,id',
+            'id_drzave' => 'required|exists:drzava,id',
             'id_termina' => 'required|exists:terminis,id',
             'broj_odraslih' => 'required|integer|min:1',
             'broj_dece' => 'nullable|integer|min:0',
             'napomena' => 'nullable|string|max:1000',
-            'id_putovanja' => 'required|exists:putovanjas,id',
-            'id_hotela' => 'nullable|exists:hotels,id',
-            'id_tip_sobe' => 'nullable|exists:tip_sobes,id',
+            'id_putovanja' => 'required|exists:putovanje,id',
+            'id_hotela' => 'nullable|exists:hotel,id',
+            'id_tip_sobe' => 'nullable|exists:tip_sobe,id',
             'status' => 'nullable|string|in:nova,potvrđena,otkazana',
         ];
     }

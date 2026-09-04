@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PutovanjaSlike extends Model
+class PutovanjeSlika extends Model
 {
-    protected $table = 'putovanja_slikas';
+    protected $table = 'putovanje_slika';
     protected $fillable = ['id_putovanja', 'slika'];
 
     public function putovanje()

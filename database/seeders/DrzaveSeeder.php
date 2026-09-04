@@ -27,7 +27,7 @@ class DrzaveSeeder extends Seeder
         ];
 
         foreach ($drzave as $drzava) {
-            \DB::table('drzavas')->insert([
+            \DB::table('drzava')->insert([
                 'naziv' => $drzava,
                 'created_at' => now(),
                 'updated_at' => now(),

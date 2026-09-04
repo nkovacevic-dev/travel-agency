@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $putovanje = $viewModel->putovanje();
+    $termini = $viewModel->termini();
+@endphp
+
 <div class="container" style="padding-top:80px;">
     @include('includes.message_alert')
     <div class="mb-3">
@@ -112,10 +117,6 @@
                                 <x-input-number name="broj_dece" label="Deca" :value="0" />
                             </div>
                         </div>
-
-                        @if(count($tip_sobe) > 0)
-                        <x-input-select name="id_tip_sobe" label="Tip sobe" :items="$tip_sobe" :emptyOption="true" />
-                        @endif
 
                         <x-input-textarea name="napomena" label="Napomena" />
 

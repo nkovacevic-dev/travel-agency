@@ -28,23 +28,23 @@ $("#datatable_rezervacije").DataTable({
     columns: [
         {
             data: "id",
-            name: "rezervacijes.id",
+            name: "rezervacija.id",
         },
         {
             data: "naziv_putovanja",
-            name: "putovanjas.naziv",
+            name: "putovanje.naziv",
         },
         {
             data: "puno_ime",
-            name: "rezervacijes.puno_ime",
+            name: "rezervacija.puno_ime",
         },
         {
             data: "email",
-            name: "rezervacijes.email",
+            name: "rezervacija.email",
         },
         {
             data: "telefon",
-            name: "rezervacijes.telefon",
+            name: "rezervacija.telefon",
         },
         {
             data: "termin",
@@ -52,22 +52,22 @@ $("#datatable_rezervacije").DataTable({
         },
         {
             data: "broj_odraslih",
-            name: "rezervacijes.broj_odraslih",
+            name: "rezervacija.broj_odraslih",
         },
         {
             data: "broj_dece",
-            name: "rezervacijes.broj_dece",
+            name: "rezervacija.broj_dece",
         },
         {
             data: "ukupna_cena",
-            name: "rezervacijes.ukupna_cena",
+            name: "rezervacija.ukupna_cena",
             render: function (data, type, row) {
                 return data ? parseFloat(data).toFixed(2) + ' €' : '0.00 €';
             }
         },
         {
             data: "status",
-            name: "rezervacijes.status",
+            name: "rezervacija.status",
             render: function (data, type, row) {
                 let badge = 'warning';
                 if (data === 'potvrđena') badge = 'success';
@@ -77,7 +77,7 @@ $("#datatable_rezervacije").DataTable({
         },
         {
             data: "created_at",
-            name: "rezervacijes.created_at",
+            name: "rezervacija.created_at",
             render: function (data, type, row) {
                 return data ? new Date(data).toLocaleDateString('sr-RS') : '';
             }

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Rezervacije;
+use App\Models\Rezervacija;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,9 +10,9 @@ class RezervacijaAdminMail extends Mailable
 {
     use SerializesModels;
 
-    public Rezervacije $rezervacija;
+    public Rezervacija $rezervacija;
 
-    public function __construct(Rezervacije $rezervacija)
+    public function __construct(Rezervacija $rezervacija)
     {
         $this->rezervacija = $rezervacija;
     }

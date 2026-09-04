@@ -63,23 +63,23 @@ $('#datatable_hoteli').DataTable({
     ],
     columns: [{
             data: 'id',
-            name: 'hotels.id'
+            name: 'hotel.id'
         },
         {
             data: 'naziv',
-            name: 'hotels.naziv',
+            name: 'hotel.naziv',
         },
         {
             data: 'naziv_drzave',
-            name: 'drzavas.naziv'
+            name: 'drzava.naziv'
         },
         {
             data: 'grad',
-            name: 'hotels.grad'
+            name: 'hotel.grad'
         },
         {
             data: 'broj_zvezdica',
-            name: 'hotels.broj_zvezdica'
+            name: 'hotel.broj_zvezdica'
         },
         {
             data: 'akcija',

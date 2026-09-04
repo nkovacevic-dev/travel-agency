@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKorisnikRequest;
 use App\Http\Requests\UpdateKorisnikRequest;
-use App\Models\User;
+use App\Models\Korisnik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +12,7 @@ class KorisnikController extends Controller
 {
      public function tabela()
     {
-        $korisnici = User::select('users.*');
+        $korisnici = Korisnik::select('korisnik.*');
 
         return datatables()->of($korisnici)
         ->addColumn('akcija', 'korisnik.dt.kolona_akcije')
@@ -27,13 +27,13 @@ class KorisnikController extends Controller
 
     public function create()
     {
-        $korisnik = new User();
+        $korisnik = new Korisnik();
         return view('korisnik.forma', compact('korisnik'));
     }
 
     public function store(StoreKorisnikRequest $request)
     {
-        User::create([
+        Korisnik::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
@@ -51,19 +51,19 @@ class KorisnikController extends Controller
 
     public function show(string $id)
     {
-        $korisnik = User::findOrFail($id);
+        $korisnik = Korisnik::findOrFail($id);
         return view('korisnik.show', compact('korisnik'));
     }
 
     public function edit(string $id)
     {
-        $korisnik = User::findOrFail($id);
+        $korisnik = Korisnik::findOrFail($id);
         return view('korisnik.forma', compact('korisnik'));
     }
 
     public function update(UpdateKorisnikRequest $request, string $id)
     {
-        $korisnik = User::findOrFail($id);
+        $korisnik = Korisnik::findOrFail($id);
         $korisnik->name  = $request->name;
         $korisnik->email = $request->email;
 
@@ -82,7 +82,7 @@ class KorisnikController extends Controller
     public function destroy(string $id)
     {
         try {
-            $korisnik = User::findOrFail($id);
+            $korisnik = Korisnik::findOrFail($id);
             $korisnik->delete();
             return response()->json(['success' => true, 'message' => 'Korisnik je uspešno obrisan!']);
         } catch (\Exception $e) {

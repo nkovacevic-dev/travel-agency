@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Termin extends Model
 {
-    protected $table = 'terminis';
+    protected $table = 'termini';
 
     protected $fillable = [
         'id_putovanja',
@@ -28,6 +28,6 @@ class Termin extends Model
 
     public function rezervacije()
     {
-        return $this->hasMany(Rezervacije::class, 'id_termina');
+        return $this->hasMany(Rezervacija::class, 'id_termina');
     }
 }

@@ -1,0 +1,17 @@
+{
+    "rezervacija": {
+        "max_odraslih": 6,
+        "max_dece": 4,
+        "max_ukupno_putnika": 8,
+        "min_dana_unapred": 3,
+        "popust_deca_procenat": 50
+    },
+    "otkazivanje": {
+        "pravila": [
+            { "dana_pre_od": 30, "kazna_procenat": 0 },
+            { "dana_pre_od": 15, "kazna_procenat": 25 },
+            { "dana_pre_od": 7,  "kazna_procenat": 50 },
+            { "dana_pre_od": 0,  "kazna_procenat": 100 }
+        ]
+    }
+}

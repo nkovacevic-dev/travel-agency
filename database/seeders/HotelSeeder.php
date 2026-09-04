@@ -13,7 +13,7 @@ class HotelSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('hotels')->insert([
+        DB::table('hotel')->insert([
             [
                 'naziv' => 'Hotel Splendid',
                 'broj_zvezdica' => 5,

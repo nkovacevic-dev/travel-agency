@@ -28,23 +28,23 @@ $("#datatable_putovanja").DataTable({
     columns: [
         {
             data: "id",
-            name: "putovanjas.id",
+            name: "putovanje.id",
         },
         {
             data: "naziv",
-            name: "putovanjas.naziv",
+            name: "putovanje.naziv",
         },
         {
             data: "naziv_drzave",
-            name: "drzavas.naziv",
+            name: "drzava.naziv",
         },
         {
             data: "grad",
-            name: "putovanjas.grad",
+            name: "putovanje.grad",
         },
         {
             data: "cena",
-            name: "putovanjas.cena",
+            name: "putovanje.cena",
         },
         {
             data: "termini",
@@ -54,7 +54,7 @@ $("#datatable_putovanja").DataTable({
         },
         {
             data: "broj_rezervacija",
-            name: "putovanjas.broj_rezervacija",
+            name: "putovanje.broj_rezervacija",
         },
         {
             data: 'akcija',

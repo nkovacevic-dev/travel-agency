@@ -104,18 +104,18 @@ Aplikacija će biti dostupna na: **http://localhost:8000**
 
 Otvori phpMyAdmin ili MySQL Workbench i proveri:
 
-### Tabela `rezervacijes`
+### Tabela `rezervacija`
 ```sql
-SELECT * FROM rezervacijes;
+SELECT * FROM rezervacija;
 ```
 **Trebalo bi da vidiš:**
 - Sve kreirane rezervacije
 - `ukupna_cena` automatski izračunata
 - `status` postavljen na "nova" (ili kako si izmenio)
 
-### Tabela `putovanjas`
+### Tabela `putovanje`
 ```sql
-SELECT naziv, broj_rezervacija FROM putovanjas;
+SELECT naziv, broj_rezervacija FROM putovanje;
 ```
 **Trebalo bi da vidiš:**
 - `broj_rezervacija` ažuriran automatski
@@ -192,13 +192,13 @@ php artisan db:seed
 ```sql
 -- Proveri sve rezervacije sa nazivom putovanja
 SELECT r.*, p.naziv as putovanje_naziv 
-FROM rezervacijes r 
-LEFT JOIN putovanjas p ON r.id_putovanja = p.id;
+FROM rezervacija r 
+LEFT JOIN putovanje p ON r.id_putovanja = p.id;
 
 -- Proveri putovanja sa brojem rezervacija
 SELECT p.naziv, p.broj_rezervacija, COUNT(r.id) as stvarne_rezervacije
-FROM putovanjas p
-LEFT JOIN rezervacijes r ON r.id_putovanja = p.id
+FROM putovanje p
+LEFT JOIN rezervacija r ON r.id_putovanja = p.id
 GROUP BY p.id;
 ```
 

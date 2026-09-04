@@ -1,0 +1,180 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+class Korisnik {
+  +id: bigint
+  +name: string
+  +email: string
+  +email_verified_at: timestamp
+  +password: string
+  +remember_token: string
+  +created_at: timestamp
+  +updated_at: timestamp
+}
+
+class Drzava {
+  +id: bigint
+  +naziv: string
+  +created_at: timestamp
+  +updated_at: timestamp
+}
+
+class Hotel {
+  +id: bigint
+  +naziv: string
+  +broj_zvezdica: tinyint
+  +adresa: string
+  +grad: string
+  +id_drzave: bigint
+  +telefon: string
+  +email: string
+  +opis: text
+  +created_at: timestamp
+  +updated_at: timestamp
+  +drzava()
+}
+
+class TipSobe {
+  +id: bigint
+  +naziv: string
+  +created_at: timestamp
+  +updated_at: timestamp
+}
+
+class TipPrevoza {
+  +id: bigint
+  +naziv: string
+  +created_at: timestamp
+  +updated_at: timestamp
+}
+
+class Prevoznik {
+  +id: bigint
+  +naziv: string
+  +adresa: string
+  +grad: string
+  +id_tip_prevoza: bigint
+  +kontakt: string
+  +created_at: timestamp
+  +updated_at: timestamp
+  +tip_prevoza()
+}
+
+class Putovanje {
+  +id: bigint
+  +naziv: string
+  +id_drzave: bigint
+  +grad: string
+  +datum_od: date
+  +datum_do: date
+  +broj_dana: int
+  +broj_nocenja: int
+  +broj_dostupnih_mesta: int
+  +broj_rezervacija: int
+  +cena: decimal
+  +id_hotela: bigint
+  +id_tip_prevoza: bigint
+  +prevoznik: string
+  +program_putovanja: text
+  +fakultativni_izleti: text
+  +pravila_otkazivanja: text
+  +created_at: timestamp
+  +updated_at: timestamp
+  +drzava()
+  +hotel()
+  +tipPrevoza()
+  +termini()
+  +rezervacije()
+  +slike()
+}
+
+class Termin {
+  +id: bigint
+  +id_putovanja: bigint
+  +datum_od: date
+  +datum_do: date
+  +broj_dostupnih_mesta: int
+  +created_at: timestamp
+  +updated_at: timestamp
+  +putovanje()
+  +rezervacije()
+}
+
+class PutovanjeSlika {
+  +id: bigint
+  +id_putovanja: bigint
+  +slika: string
+  +created_at: timestamp
+  +updated_at: timestamp
+  +putovanje()
+}
+
+class Rezervacija {
+  +id: bigint
+  +puno_ime: string
+  +telefon: string
+  +email: string
+  +broj_pasosa: string
+  +adresa: string
+  +mesto: string
+  +id_drzave: bigint
+  +napomena: text
+  +id_putovanja: bigint
+  +id_termina: bigint
+  +id_hotela: bigint
+  +id_tip_sobe: bigint
+  +broj_odraslih: int
+  +broj_dece: int
+  +status: string
+  +token_otkazivanja: uuid
+  +ukupna_cena: decimal
+  +created_at: timestamp
+  +updated_at: timestamp
+  +putovanje()
+  +termin()
+  +hotel()
+  +tipSobe()
+}
+
+class RezervacijaService {
+  +izracunajCenu()
+  +posaljiEmailPotvrde()
+}
+
+class PravilaService {
+  +maxOdraslih()
+  +maxDece()
+  +maxUkupnoPutnika()
+  +minDanaUnapred()
+  +popustDeceProcenat()
+  +kaznaOtkazivanja()
+}
+
+class PutovanjeService {
+  +sacuvajSlike()
+  +obrisiSlike()
+  +sacuvajTermine()
+  +generisiPdfPutnici()
+}
+
+class "rezervacija_pravila.json" as JsonRules
+
+Drzava "1" --> "0..*" Hotel : hoteli
+Drzava "1" --> "0..*" Putovanje : putovanja
+TipPrevoza "1" --> "0..*" Prevoznik : prevoznici
+TipPrevoza "1" --> "0..*" Putovanje : putovanja
+Hotel "1" --> "0..*" Putovanje : putovanja
+Hotel "1" --> "0..*" Rezervacija : rezervacije
+TipSobe "1" --> "0..*" Rezervacija : rezervacije
+Drzava "1" --> "0..*" Rezervacija : rezervacije
+Putovanje "1" --> "0..*" Termin : termini
+Putovanje "1" --> "0..*" Rezervacija : rezervacije
+Putovanje "1" --> "0..*" PutovanjeSlika : slike
+Termin "1" --> "0..*" Rezervacija : rezervacije
+RezervacijaService ..> Rezervacija
+RezervacijaService ..> Putovanje
+RezervacijaService ..> PravilaService
+PutovanjeService ..> Putovanje
+PravilaService ..> JsonRules
+@enduml

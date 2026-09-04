@@ -1,0 +1,42 @@
+@startuml
+skinparam componentStyle rectangle
+left to right direction
+
+actor Putnik
+actor Administrator
+
+package "Agencija Beyond Borders aplikacija" {
+  [Blade prikazi] as Views
+  [Web rute] as Routes
+  [API rute] as ApiRoutes
+  [Kontroleri] as Controllers
+  [PutovanjeService] as PutovanjeService
+  [RezervacijaService] as RezervacijaService
+  [PravilaService] as PravilaService
+  [Eloquent modeli] as Models
+  [Mail klase] as Mail
+  [JSON pravila rezervacija] as JsonRules
+}
+
+database "MySQL baza" as Database
+cloud "Email servis" as Email
+folder "Skladiste slika" as Storage
+
+Putnik --> Views
+Administrator --> Views
+Views --> Routes
+Routes --> Controllers
+ApiRoutes --> Controllers
+Controllers --> PutovanjeService
+Controllers --> RezervacijaService
+Controllers --> PravilaService
+Controllers --> Models
+PutovanjeService --> Models
+PutovanjeService --> Storage
+RezervacijaService --> Models
+RezervacijaService --> Mail
+RezervacijaService --> PravilaService
+PravilaService --> JsonRules
+Models --> Database
+Mail --> Email
+@enduml

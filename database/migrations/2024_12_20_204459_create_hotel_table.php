@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hotels', function (Blueprint $table) {
+        Schema::create('hotel', function (Blueprint $table) {
             $table->id();
             $table->string('naziv');
             $table->unsignedTinyInteger('broj_zvezdica');
             $table->string('adresa');
             $table->string('grad');
-            $table->foreignId('id_drzave')->constrained('drzavas')->onDelete('restrict');
+            $table->foreignId('id_drzave')->constrained('drzava')->onDelete('restrict');
             $table->string('telefon');
             $table->string('email')->nullable();
             $table->text('opis')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hotels');
+        Schema::dropIfExists('hotel');
     }
 };
