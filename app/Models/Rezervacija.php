@@ -29,14 +29,14 @@ class Rezervacija extends Model
         'status',
         'napomena',
         'ukupna_cena',
-        'cancel_token',
+        'token_otkazivanja',
     ];
 
     protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->cancel_token ??= \Illuminate\Support\Str::uuid()->toString();
+            $model->token_otkazivanja ??= \Illuminate\Support\Str::uuid()->toString();
         });
     }
 

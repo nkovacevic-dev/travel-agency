@@ -45,11 +45,11 @@ class RezervacijeController extends Controller
         $query = Rezervacija::select(
                 'rezervacija.*',
                 'putovanje.naziv as naziv_putovanja',
-                'terminis.datum_od',
-                'terminis.datum_do'
+                'termini.datum_od',
+                'termini.datum_do'
             )
             ->leftJoin('putovanje', 'putovanje.id', '=', 'rezervacija.id_putovanja')
-            ->leftJoin('terminis', 'terminis.id', '=', 'rezervacija.id_termina')
+            ->leftJoin('termini', 'termini.id', '=', 'rezervacija.id_termina')
             ->orderBy('rezervacija.created_at', 'desc');
 
         return datatables()->of($query)
@@ -80,6 +80,7 @@ class RezervacijeController extends Controller
 
             $termin = Termin::findOrFail($request->id_termina);
             $this->service->proveriMinDanaPrePolaska($termin);
+            $this->service->proveriDostupnaMesta($termin, $brojOdraslih + $brojDece);
 
             // Izračunaj ukupnu cenu
             $putovanje = Putovanje::findOrFail($request->id_putovanja);
@@ -91,8 +92,9 @@ class RezervacijeController extends Controller
             
             $rezervacija = Rezervacija::create($data);
             
-            // Ažuriraj broj rezervacija za putovanje
+            // Ažuriraj broj rezervacija za putovanje i preostala mesta za termin
             $putovanje->increment('broj_rezervacija');
+            $termin->decrement('broj_dostupnih_mesta', $brojOdraslih + $brojDece);
             
             DB::commit();
 
@@ -166,7 +168,28 @@ class RezervacijeController extends Controller
             $rezervacija = Rezervacija::findOrFail($id);
             $putovanje   = Putovanje::findOrFail($request->id_putovanja);
             $ukupna_cena = $this->service->izracunajCenu($putovanje, $request->broj_odraslih, (int) $request->broj_dece);
-            
+
+            $staroBrojPutnika = $rezervacija->broj_odraslih + $rezervacija->broj_dece;
+            $noviBrojPutnika  = $brojOdraslih + $brojDece;
+
+            if ((int) $rezervacija->id_termina === (int) $request->id_termina) {
+                $razlika = $noviBrojPutnika - $staroBrojPutnika;
+                if ($razlika !== 0) {
+                    $termin = Termin::findOrFail($request->id_termina);
+                    if ($razlika > 0) {
+                        $this->service->proveriDostupnaMesta($termin, $razlika);
+                    }
+                    $termin->decrement('broj_dostupnih_mesta', $razlika);
+                }
+            } else {
+                if ($rezervacija->id_termina) {
+                    Termin::find($rezervacija->id_termina)?->increment('broj_dostupnih_mesta', $staroBrojPutnika);
+                }
+                $noviTermin = Termin::findOrFail($request->id_termina);
+                $this->service->proveriDostupnaMesta($noviTermin, $noviBrojPutnika);
+                $noviTermin->decrement('broj_dostupnih_mesta', $noviBrojPutnika);
+            }
+
             $data = $request->all();
             $data['ukupna_cena'] = $ukupna_cena;
             
@@ -185,7 +208,7 @@ class RezervacijeController extends Controller
     /** Javna stranica za otkazivanje – dostupna putem tokena iz emaila. */
     public function javnoOtkazivanje(string $token)
     {
-        $rezervacija = Rezervacija::with(['putovanje', 'termin'])->where('cancel_token', $token)->firstOrFail();
+        $rezervacija = Rezervacija::with(['putovanje', 'termin'])->where('token_otkazivanja', $token)->firstOrFail();
 
         if ($rezervacija->status === StatusRezervacije::Otkazana) {
             return view('rezervacije.otkazivanje.putnik_otkazivanje', ['rezervacija' => $rezervacija, 'vec_otkazana' => true, 'povratnaCena' => 0]);
@@ -202,7 +225,7 @@ class RezervacijeController extends Controller
     /** Primenjuje otkazivanje putem tokena iz emaila. */
     public function javnoPotvrdiOtkazivanje(string $token)
     {
-        $rezervacija = Rezervacija::with('putovanje')->where('cancel_token', $token)->firstOrFail();
+        $rezervacija = Rezervacija::with('putovanje')->where('token_otkazivanja', $token)->firstOrFail();
 
         if ($rezervacija->status === StatusRezervacije::Otkazana) {
             return redirect()->route('rezervacije.javno.otkazivanje', $token)
@@ -211,11 +234,7 @@ class RezervacijeController extends Controller
 
         ['povratnaCena' => $povratnaCena] = $this->service->izracunajOtkazivanje($rezervacija);
 
-        $rezervacija->update(['status' => StatusRezervacije::Otkazana]);
-
-        if ($rezervacija->putovanje) {
-            $rezervacija->putovanje->decrement('broj_rezervacija');
-        }
+        $this->service->otkaziRezervaciju($rezervacija);
 
         return redirect()->route('rezervacije.javno.otkazivanje', $token)
             ->with('success', 'Vaša rezervacija je uspešno otkazana.')
@@ -238,11 +257,7 @@ class RezervacijeController extends Controller
     public function potvrdiOtkazivanje(string $id)
     {
         $rezervacija = Rezervacija::findOrFail($id);
-        $rezervacija->update(['status' => StatusRezervacije::Otkazana]);
-
-        if ($rezervacija->putovanje) {
-            $rezervacija->putovanje->decrement('broj_rezervacija');
-        }
+        $this->service->otkaziRezervaciju($rezervacija);
 
         return redirect()->route('rezervacije.index')->with('success', 'Rezervacija je uspešno otkazana.');
     }
@@ -255,9 +270,9 @@ class RezervacijeController extends Controller
         try {
             $rezervacija = Rezervacija::findOrFail($id);
             
-            // Dekrementuj broj rezervacija za putovanje
-            if ($rezervacija->putovanje) {
-                $rezervacija->putovanje->decrement('broj_rezervacija');
+            // Vrati mesta na termin i broj rezervacija na putovanje, ako već nije otkazana
+            if ($rezervacija->status !== StatusRezervacije::Otkazana) {
+                $this->service->osloboditKapacitet($rezervacija);
             }
             
             $rezervacija->delete();

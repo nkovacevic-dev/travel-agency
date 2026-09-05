@@ -12,7 +12,7 @@ class KontaktController extends Controller
     {
         $validated = $request->validated();
 
-        Mail::to(config('mail.admin_address'))->send(
+        Mail::to(config('mail.admin_adresa'))->send(
             new KontaktMail($validated['ime'], $validated['email'], $validated['telefon'] ?? '', $validated['poruka'])
         );
 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\StatusRezervacije;
 use App\Mail\RezervacijaAdminMail;
 use App\Mail\RezervacijaPotvrdaMail;
 use App\Models\Putovanje;
@@ -51,12 +52,24 @@ class RezervacijaService
         }
     }
 
+    /**
+     * Proverava da li termin ima dovoljno slobodnih mesta za dati broj putnika.
+     *
+     * @throws \InvalidArgumentException ako nema dovoljno slobodnih mesta.
+     */
+    public function proveriDostupnaMesta(Termin $termin, int $brojPutnika): void
+    {
+        if ($termin->broj_dostupnih_mesta < $brojPutnika) {
+            throw new \InvalidArgumentException("Za izabrani termin je dostupno samo {$termin->broj_dostupnih_mesta} mesta.");
+        }
+    }
+
     public function posaljiEmailPotvrde(Rezervacija $rezervacija): void
     {
         $rezervacija->load(['putovanje', 'termin']);
 
         Mail::to($rezervacija->email)->send(new RezervacijaPotvrdaMail($rezervacija));
-        Mail::to(config('mail.admin_address'))->send(new RezervacijaAdminMail($rezervacija));
+        Mail::to(config('mail.admin_adresa'))->send(new RezervacijaAdminMail($rezervacija));
     }
 
     /** Izračunava broj dana do polaska, procenat i iznos kazne, i iznos koji se vraća gostu. */
@@ -68,5 +81,27 @@ class RezervacijaService
         $povratnaCena  = round($rezervacija->ukupna_cena - $kaznaCena, 2);
 
         return compact('danaPre', 'kaznaProcenat', 'kaznaCena', 'povratnaCena');
+    }
+
+    /** Postavlja status na otkazano i oslobađa zauzeti kapacitet (idempotentno). */
+    public function otkaziRezervaciju(Rezervacija $rezervacija): void
+    {
+        if ($rezervacija->status === StatusRezervacije::Otkazana) {
+            return;
+        }
+
+        $rezervacija->update(['status' => StatusRezervacije::Otkazana]);
+        $this->osloboditKapacitet($rezervacija);
+    }
+
+    /** Vraća broj rezervacija na putovanju i broj dostupnih mesta na terminu. */
+    public function osloboditKapacitet(Rezervacija $rezervacija): void
+    {
+        if ($rezervacija->putovanje) {
+            $rezervacija->putovanje->decrement('broj_rezervacija');
+        }
+        if ($rezervacija->termin) {
+            $rezervacija->termin->increment('broj_dostupnih_mesta', $rezervacija->broj_odraslih + $rezervacija->broj_dece);
+        }
     }
 }

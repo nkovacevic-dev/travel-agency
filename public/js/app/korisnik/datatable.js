@@ -63,15 +63,15 @@ $('#datatable_korisnici').DataTable({
     ],
     columns: [{
             data: 'id',
-            name: 'users.id'
+            name: 'korisnik.id'
         },
         {
             data: 'name',
-            name: 'users.name',
+            name: 'korisnik.name',
         },
         {
             data: 'email',
-            name: 'users.email'
+            name: 'korisnik.email'
         },
         {
             data: 'akcija',

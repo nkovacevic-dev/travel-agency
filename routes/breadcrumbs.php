@@ -59,6 +59,10 @@ Breadcrumbs::for('rezervacije.edit', function ($trail, $id) {
     $trail->parent('rezervacije.show', $id);
     $trail->push(__('Izmena'), route('rezervacije.edit', $id));
 });
+Breadcrumbs::for('rezervacije.javno.otkazivanje', function ($trail, $token) {
+    $trail->parent('pocetna');
+    $trail->push(__('Otkazivanje rezervacije'), route('rezervacije.javno.otkazivanje', $token));
+});
 
 Breadcrumbs::for('putnici.index', function ($trail) {
     $trail->parent('pocetna');

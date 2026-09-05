@@ -125,7 +125,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Rezervacije</h4>
-                    <a href="{{ route('putovanja.putnici_pdf', $putovanje->id) }}" class="btn button-primary btn-sm" target="_blank">
+                    <a href="{{ route('putovanja.spisak_putnika_pdf', $putovanje->id) }}" class="btn button-primary btn-sm" target="_blank">
                         <i class="fa fa-file-pdf-o me-1"></i> {{ __('PDF') }}
                     </a>
                 </div>

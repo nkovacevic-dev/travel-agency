@@ -39,7 +39,7 @@ class PutovanjeService
 
     public function generisiPdfPutnici(Putovanje $putovanje, $rezervacije): \Barryvdh\DomPDF\PDF
     {
-        $pdf = Pdf::loadView('putovanje.putnici_pdf', compact('putovanje', 'rezervacije'));
+        $pdf = Pdf::loadView('putovanje.spisak_putnika_pdf', compact('putovanje', 'rezervacije'));
         $pdf->setPaper('A4', 'landscape');
         return $pdf;
     }

@@ -29,7 +29,7 @@ class StoreRezervacijaRequest extends FormRequest
             'adresa'      => [$this->user() ? 'required' : 'nullable', 'string', 'max:255'],
             'mesto'       => [$this->user() ? 'required' : 'nullable', 'string', 'max:100'],
             'id_drzave'   => [$this->user() ? 'required' : 'nullable', 'exists:drzava,id'],
-            'id_termina' => 'required|exists:terminis,id',
+            'id_termina' => 'required|exists:termini,id',
             'broj_odraslih' => 'required|integer|min:1',
             'broj_dece' => 'nullable|integer|min:0',
             'napomena' => 'nullable|string|max:1000',

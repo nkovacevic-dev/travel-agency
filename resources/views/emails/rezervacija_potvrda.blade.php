@@ -42,9 +42,9 @@
 
 <p>Kontaktiraćemo Vas u najkraćem roku radi potvrde i daljih informacija.</p>
 
-@if($rezervacija->cancel_token)
+@if($rezervacija->token_otkazivanja)
 <p style="margin-top:24px;">
-    <a href="{{ route('rezervacije.javno.otkazivanje', $rezervacija->cancel_token) }}"
+    <a href="{{ route('rezervacije.javno.otkazivanje', $rezervacija->token_otkazivanja) }}"
        style="display:inline-block;padding:10px 20px;background-color:#dc3545;color:#fff;text-decoration:none;border-radius:4px;font-size:14px;">
         Otkaži rezervaciju
     </a>

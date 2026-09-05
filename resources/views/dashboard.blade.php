@@ -125,7 +125,7 @@
                                 @foreach($top_destinacije as $dest)
                                 <tr>
                                     <td><strong>{{ $dest->naziv }}</strong></td>
-                                    <td><span class="badge bg-primary">{{ $dest->broj_rezervacija }}</span></td>
+                                    <td class="text-center">{{ $dest->broj_rezervacija }}</td>
                                     <td>{{ number_format($dest->ukupan_prihod, 2) }} €</td>
                                 </tr>
                                 @endforeach
@@ -180,66 +180,70 @@
 @section('content_scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Rezervacije po mesecima - Line Chart
-const ctxRezervacije = document.getElementById('rezervacijeChart');
-new Chart(ctxRezervacije, {
-    type: 'line',
-    data: {
-        labels: {!! json_encode($rezervacije_po_mesecima->pluck('mesec')) !!},
-        datasets: [{
-            label: 'Broj rezervacija',
-            data: {!! json_encode($rezervacije_po_mesecima->pluck('broj')) !!},
-            borderColor: 'rgb(102, 126, 234)',
-            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-            tension: 0.4,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
-            }
+    // Rezervacije po mesecima - Line Chart
+    const ctxRezervacije = document.getElementById('rezervacijeChart');
+    new Chart(ctxRezervacije, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($rezervacije_po_mesecima->pluck('mesec')) !!},
+            datasets: [{
+                label: 'Broj rezervacija',
+                data: {!! json_encode($rezervacije_po_mesecima->pluck('broj')) !!},
+                borderColor: 'rgb(102, 126, 234)',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
         },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
                 }
             }
         }
-    }
-});
+    });
 
-// Status rezervacija - Doughnut Chart
-const ctxStatus = document.getElementById('statusChart');
-new Chart(ctxStatus, {
-    type: 'doughnut',
-    data: {
-        labels: ['Nove', 'Potvrđene', 'Otkazane'],
-        datasets: [{
-            data: [{{ $status_stats['nova'] ?? 0 }}, {{ $status_stats['potvrđena'] ?? 0 }}, {{ $status_stats['otkazana'] ?? 0 }}],
-            backgroundColor: [
-                'rgb(255, 193, 7)',
-                'rgb(40, 167, 69)',
-                'rgb(220, 53, 69)'
-            ],
-            borderWidth: 2
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                position: 'bottom',
+    // Status rezervacija - Doughnut Chart
+    const ctxStatus = document.getElementById('statusChart');
+    new Chart(ctxStatus, {
+        type: 'doughnut',
+        data: {
+            labels: ['Nove', 'Potvrđene', 'Otkazane'],
+            datasets: [{
+                data: [
+                    {{ $status_stats['nova'] ?? 0 }},
+                    {{ $status_stats['potvrđena'] ?? 0 }},
+                    {{ $status_stats['otkazana'] ?? 0 }}
+                ],
+                backgroundColor: [
+                    'rgb(255, 193, 7)',
+                    'rgb(40, 167, 69)',
+                    'rgb(220, 53, 69)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
             }
         }
-    }
-});
+    });
 </script>
 @endsection

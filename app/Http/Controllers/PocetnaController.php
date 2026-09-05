@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Putovanje;
+use App\Services\DashboardService;
 
 class PocetnaController extends Controller
 {
 
-    //  public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct(private DashboardService $dashboard) {}
 
     public function index()
     {
-        $putovanja = \App\Models\Putovanje::all();
-        return view('pocetna', compact('putovanja'));
+        if (Auth::check()) {
+            return view('dashboard', $this->dashboard->getStatistike());
+        }
+
+        $putovanja = Putovanje::with('termini', 'tipPrevoza', 'slike')->get();
+        return view('pocetna.index', compact('putovanja'));
     }
 }

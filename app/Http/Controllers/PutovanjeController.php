@@ -146,12 +146,12 @@ class PutovanjeController extends Controller
         }
     }
 
-    public function putnici_pdf(string $id)
+    public function spisak_putnika_pdf(string $id)
     {
         $putovanje   = Putovanje::with(['drzava', 'tipPrevoza', 'termini'])->findOrFail($id);
         $rezervacije = $putovanje->rezervacije()->with('tipSobe', 'termin')->get();
         return $this->service->generisiPdfPutnici($putovanje, $rezervacije)
-                             ->download('putnici-' . Str::slug($putovanje->naziv) . '.pdf');
+                             ->download('Spisak putnika-' . Str::slug($putovanje->naziv) . '.pdf');
     }
 
     /**
@@ -162,7 +162,7 @@ class PutovanjeController extends Controller
         try {
             $putovanje = Putovanje::findOrFail($id);
             
-            // Proveri da li postoje rezervacije
+            // Provera da li postoje rezervacije
             if ($putovanje->rezervacije()->count() > 0) {
                 return response()->json(['success' => false, 'message' => 'Ne možete obrisati putovanje koje ima rezervacije!'], 400);
             }

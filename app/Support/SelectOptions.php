@@ -4,7 +4,7 @@ namespace App\Support;
 
 use Illuminate\Support\Collection;
 
-/** Pretvara Eloquent kolekcije u niz opcija (id/text) za select2 padajuće liste. */
+/** Pretvara Eloquent kolekcije u niz opcija za select2 padajuće liste. */
 class SelectOptions
 {
     public static function odNaziva(Collection $stavke): array

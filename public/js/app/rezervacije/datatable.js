@@ -48,7 +48,7 @@ $("#datatable_rezervacije").DataTable({
         },
         {
             data: "termin",
-            name: "terminis.datum_od",
+            name: "termini.datum_od",
         },
         {
             data: "broj_odraslih",
@@ -98,20 +98,30 @@ $("#datatable_rezervacije").DataTable({
 // Brisanje rezervacije
 $(document).on('click', '.btn-delete', function() {
     const id = $(this).data('id');
-    
-    if (confirm('Da li ste sigurni da želite da obrišete ovu rezervaciju?')) {
+
+    Swal.fire({
+        title: 'Obriši rezervaciju?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Obriši',
+        cancelButtonText: 'Otkaži',
+        reverseButtons: true,
+    }).then(function (result) {
+        if (!result.isConfirmed) return;
+
         axios.delete('/rezervacije/' + id)
             .then(function (response) {
                 if (response.data.success) {
-                    alert(response.data.message);
-                    $("#datatable_rezervacije").DataTable().ajax.reload();
+                    Swal.fire({ icon: 'success', title: response.data.message, timer: 2000, showConfirmButton: false });
+                    $('#datatable_rezervacije').DataTable().ajax.reload();
                 } else {
-                    alert('Greška: ' + response.data.message);
+                    Swal.fire({ icon: 'error', title: response.data.message });
                 }
             })
             .catch(function (error) {
-                alert('Došlo je do greške pri brisanju.');
-                console.log(error);
+                const msg = error.response?.data?.message ?? 'Došlo je do greške pri brisanju.';
+                Swal.fire({ icon: 'error', title: msg });
             });
-    }
+    });
 });
+

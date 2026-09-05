@@ -113,6 +113,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
-    'admin_address' => env('MAIL_ADMIN_ADDRESS', env('MAIL_FROM_ADDRESS', 'admin@example.com')),
+    'admin_adresa' => env('MAIL_ADMIN_ADRESA', env('MAIL_FROM_ADDRESS', 'admin@example.com')),
 
 ];

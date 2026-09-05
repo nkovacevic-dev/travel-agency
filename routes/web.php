@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PocetnaController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\KorisnikController;
 use App\Http\Controllers\PutovanjeController;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 // Javne rute (dostupne bez logovanja)
-Route::get('/', [HomeController::class, 'index'])->name('pocetna');
+Route::get('/', [PocetnaController::class, 'index'])->name('pocetna');
 Route::post('/kontakt', [KontaktController::class, 'posalji'])->name('kontakt.posalji');
 Route::get('/putovanja/{id}', [PutovanjeController::class, 'show'])->name('putovanja.show');
 Route::post('/rezervacije', [RezervacijeController::class, 'store'])->name('rezervacije.store.javno');
@@ -24,7 +24,7 @@ Route::middleware(['auth'])->get('/moj-nalog', [KorisnikController::class, 'mojN
 // Admin rute (zahtevaju autentifikaciju)
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Putovanja
-    Route::get('/putovanja/{id}/putnici-pdf', [PutovanjeController::class, 'putnici_pdf'])->name('putovanja.putnici_pdf');
+    Route::get('/putovanja/{id}/putnici-pdf', [PutovanjeController::class, 'spisak_putnika_pdf'])->name('putovanja.spisak_putnika_pdf');
     Route::post('/putovanja/tabela', [PutovanjeController::class, 'tabela'])->name('putovanja.datatable');
     Route::resource('putovanja', PutovanjeController::class)->except(['show'])->parameters(['putovanja' => 'id']);
 
