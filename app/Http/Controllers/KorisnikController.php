@@ -6,6 +6,7 @@ use App\Http\Requests\StoreKorisnikRequest;
 use App\Http\Requests\UpdateKorisnikRequest;
 use App\Models\Korisnik;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class KorisnikController extends Controller
@@ -33,13 +34,19 @@ class KorisnikController extends Controller
 
     public function store(StoreKorisnikRequest $request)
     {
-        Korisnik::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('korisnici.index')->with('success', 'Korisnik je uspešno dodat!');
+        try {
+            DB::beginTransaction();
+            Korisnik::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            DB::commit();
+            return redirect()->route('korisnici.index')->with('success', 'Korisnik je uspešno dodat!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('korisnici.create')->withInput()->with('fail', $e->getMessage());
+        }
     }
 
     public function mojNalog()
@@ -63,20 +70,27 @@ class KorisnikController extends Controller
 
     public function update(UpdateKorisnikRequest $request, string $id)
     {
-        $korisnik = Korisnik::findOrFail($id);
-        $korisnik->name  = $request->name;
-        $korisnik->email = $request->email;
+        try {
+            DB::beginTransaction();
+            $korisnik = Korisnik::findOrFail($id);
+            $korisnik->name  = $request->name;
+            $korisnik->email = $request->email;
 
-        if ($request->filled('password')) {
-            $korisnik->password = Hash::make($request->password);
+            if ($request->filled('password')) {
+                $korisnik->password = Hash::make($request->password);
+            }
+
+            $korisnik->save();
+            DB::commit();
+
+            $redirectTo = $request->input('_redirect', 'korisnici.index');
+            $message    = $redirectTo === 'pocetna' ? 'Nalog je uspešno izmenjen!' : 'Korisnik je uspešno izmenjen!';
+
+            return redirect()->route($redirectTo)->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('korisnici.edit', $id)->withInput()->with('fail', $e->getMessage());
         }
-
-        $korisnik->save();
-
-        $redirectTo = $request->input('_redirect', 'korisnici.index');
-        $message    = $redirectTo === 'pocetna' ? 'Nalog je uspešno izmenjen!' : 'Korisnik je uspešno izmenjen!';
-
-        return redirect()->route($redirectTo)->with('success', $message);
     }
 
     public function destroy(string $id)

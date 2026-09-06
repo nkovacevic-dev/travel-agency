@@ -21,6 +21,22 @@
         p {
             margin-top: 20px;
         }
+        .otkazni-link-sekcija {
+            margin-top: 24px;
+        }
+        .otkazni-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .otkazni-link-napomena {
+            font-size: 12px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -43,13 +59,13 @@
 <p>Kontaktiraćemo Vas u najkraćem roku radi potvrde i daljih informacija.</p>
 
 @if($rezervacija->token_otkazivanja)
-<p style="margin-top:24px;">
+<p class="otkazni-link-sekcija">
     <a href="{{ route('rezervacije.javno.otkazivanje', $rezervacija->token_otkazivanja) }}"
-       style="display:inline-block;padding:10px 20px;background-color:#dc3545;color:#fff;text-decoration:none;border-radius:4px;font-size:14px;">
+    class="otkazni-link">
         Otkaži rezervaciju
     </a>
 </p>
-<p style="font-size:12px;color:#888;">Link za otkazivanje je jedinstven i važi samo za ovu rezervaciju.</p>
+<p class="otkazni-link-napomena">Link za otkazivanje je jedinstven i važi samo za ovu rezervaciju.</p>
 @endif
 
 <p>Hvala na poverenju!<br><strong>{{ config('app.name') }}</strong></p>

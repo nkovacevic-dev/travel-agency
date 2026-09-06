@@ -37,9 +37,6 @@ class RezervacijeController extends Controller
         return view('rezervacije.lista');
     }
 
-    /**
-     * DataTable za rezervacije (admin).
-     */
     public function tabela()
     {
         $query = Rezervacija::select(

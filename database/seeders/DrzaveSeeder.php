@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -27,7 +28,7 @@ class DrzaveSeeder extends Seeder
         ];
 
         foreach ($drzave as $drzava) {
-            \DB::table('drzava')->insert([
+            DB::table('drzava')->insert([
                 'naziv' => $drzava,
                 'created_at' => now(),
                 'updated_at' => now(),

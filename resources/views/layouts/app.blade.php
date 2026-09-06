@@ -19,7 +19,7 @@
                 <div class="row" id="body-row">
 
                     <!-- Sidebar -->
-                    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-md-3 col-lg-2">
+                    <div id="sidebar-container" class="sidebar-expanded col-md-3 col-lg-2">
                         @include('includes.sidebar')
                     </div>
 
@@ -28,6 +28,9 @@
                         {{-- Page header / navbar --}}
                         <div class="page-header d-flex justify-content-between align-items-center">
                             <div class="left-header d-flex align-items-center gap-3">
+                                <button type="button" id="mobile-sidebar-btn" class="btn btn-link d-md-none p-0" aria-label="Otvori meni">
+                                    <i class="fa fa-bars"></i>
+                                </button>
                                 <h4>{{ __('Dobrodošli') }} {{ Auth::user()->name }}</h4>
                             </div>
                             <div class="right-header d-flex align-items-center gap-3">

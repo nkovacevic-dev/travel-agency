@@ -83,7 +83,7 @@ class RezervacijaService
         return compact('danaPre', 'kaznaProcenat', 'kaznaCena', 'povratnaCena');
     }
 
-    /** Postavlja status na otkazano i oslobađa zauzeti kapacitet (idempotentno). */
+    /** Postavlja status na otkazano i oslobađa zauzeti kapacitet. */
     public function otkaziRezervaciju(Rezervacija $rezervacija): void
     {
         if ($rezervacija->status === StatusRezervacije::Otkazana) {

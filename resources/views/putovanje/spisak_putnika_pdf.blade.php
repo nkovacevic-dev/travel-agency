@@ -22,8 +22,8 @@
 <h2>Spisak putnika — {{ $putovanje->naziv }}</h2>
 <div class="meta">
     {{ $putovanje->drzava->naziv ?? '' }}{{ $putovanje->grad ? ', ' . $putovanje->grad : '' }}
-    &nbsp;|&nbsp; Prevoz: {{ $putovanje->tipPrevoza->naziv ?? 'N/A' }}
-    &nbsp;|&nbsp; Generisano: {{ now()->format('d.m.Y H:i') }}
+    | Prevoz: {{ $putovanje->tipPrevoza->naziv ?? 'N/A' }}
+    | Generisano: {{ now()->format('d.m.Y H:i') }}
 </div>
 
 <table>

@@ -103,7 +103,8 @@ class PutovanjeController extends Controller
             'broj_dostupnih_mesta' => $t->broj_dostupnih_mesta,
         ])->toArray();
 
-        return view('putovanje.prikaz',
+        return view(
+            'putovanje.prikaz',
             array_merge(['putovanje' => $putovanje, 'termini' => $termini, 'rezervacije' => $rezervacije], $this->getDropdownData())
         );
     }
@@ -151,7 +152,7 @@ class PutovanjeController extends Controller
         $putovanje   = Putovanje::with(['drzava', 'tipPrevoza', 'termini'])->findOrFail($id);
         $rezervacije = $putovanje->rezervacije()->with('tipSobe', 'termin')->get();
         return $this->service->generisiPdfPutnici($putovanje, $rezervacije)
-                             ->download('Spisak putnika-' . Str::slug($putovanje->naziv) . '.pdf');
+            ->download('Spisak putnika-' . Str::slug($putovanje->naziv) . '.pdf');
     }
 
     /**
@@ -161,12 +162,12 @@ class PutovanjeController extends Controller
     {
         try {
             $putovanje = Putovanje::findOrFail($id);
-            
+
             // Provera da li postoje rezervacije
             if ($putovanje->rezervacije()->count() > 0) {
                 return response()->json(['success' => false, 'message' => 'Ne možete obrisati putovanje koje ima rezervacije!'], 400);
             }
-            
+
             foreach ($putovanje->slike as $slika) {
                 Storage::disk('public')->delete($slika->slika);
             }

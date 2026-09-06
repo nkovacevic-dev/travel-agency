@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('puno_ime');
             $table->string('telefon');
             $table->string('email');
-            $table->string('broj_pasosa')->nullable();
+            $table->string('broj_pasosa', 50)->nullable();
             $table->string('adresa')->nullable();
-            $table->string('mesto')->nullable();
+            $table->string('mesto', 100)->nullable();
             $table->foreignId('id_drzave')->nullable()->constrained('drzava')->onDelete('restrict');
             $table->text('napomena')->nullable();
             $table->foreignId('id_putovanja')->nullable()->constrained('putovanje')->onDelete('restrict');

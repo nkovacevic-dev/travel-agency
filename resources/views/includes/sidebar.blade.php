@@ -90,5 +90,13 @@
                  $('.has-submenu').removeClass('open'); // ukloni rotaciju strelice
              }
          });
+
+         $('#mobile-sidebar-btn').click(function() {
+             $('#sidebar-container').toggleClass('mobile-open');
+         });
+
+         $('.sidebar-submenu .sidebar-link').click(function() {
+             $('#sidebar-container').removeClass('mobile-open');
+         });
      });
  </script>

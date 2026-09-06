@@ -97,8 +97,8 @@
                             <label class="label-select"><b>{{ __('Galerija slika') }}</b></label>
                             <div class="d-flex flex-wrap gap-2 mt-1">
                                 @foreach($putovanje->slike as $slika)
-                                <a href="{{ asset('storage/' . $slika->slika) }}" target="_blank">
-                                    <img src="{{ asset('storage/' . $slika->slika) }}"
+                                <a href="{{ asset('storage/putovanja/' . $putovanje->id . '/slike/' . $slika->slika) }}" target="_blank">
+                                    <img src="{{ asset('storage/putovanja/' . $putovanje->id . '/slike/' . $slika->slika) }}"
                                          style="height: 120px; width: 160px; object-fit: cover; border-radius: 4px; border: 1px solid #dee2e6;"
                                          alt="{{ $putovanje->naziv }}">
                                 </a>

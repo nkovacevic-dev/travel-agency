@@ -16,7 +16,7 @@ return new class extends Migration
             }
         });
 
-        // Popuni token za postojeće rezervacije
+        // Ažuriranje tokena za postojeće rezervacije
         DB::table('rezervacija')->whereNull('token_otkazivanja')->orderBy('id')->each(function ($row) {
             DB::table('rezervacija')->where('id', $row->id)->update(['token_otkazivanja' => Str::uuid()]);
         });

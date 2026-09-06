@@ -16,11 +16,8 @@ return new class extends Migration
             $table->string('naziv');
             $table->foreignId('id_drzave')->constrained('drzava')->onDelete('restrict');
             $table->string('grad');
-            $table->date('datum_od')->nullable();
-            $table->date('datum_do')->nullable();
             $table->integer('broj_dana');
             $table->integer('broj_nocenja');
-            $table->integer('broj_dostupnih_mesta')->nullable();
             $table->integer('broj_rezervacija')->default(0);
             $table->decimal('cena', 10, 2);
             $table->foreignId('id_hotela')->nullable()->constrained('hotel')->onDelete('restrict');

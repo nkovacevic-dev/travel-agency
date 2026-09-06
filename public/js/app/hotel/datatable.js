@@ -115,14 +115,13 @@ $('#datatable_hoteli').DataTable({
         });
     },
     drawCallback: function() {
-        // $(document).off("vclick", ".button-delete")
-        // $(document).on("vclick", ".button-delete", obrisi);
     },
     language: {
         url: datatable_lang
     }  
 });
 
+// Brisanje hotela
 $(document).on('click', '.btn-delete-hotel', function () {
     const id = $(this).data('id');
     const naziv = $(this).closest('tr').find('td:nth-child(2)').text().trim();
