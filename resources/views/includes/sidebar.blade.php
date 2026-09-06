@@ -41,6 +41,7 @@
          <a href="#submenu4" class="sidebar-link">
              <span class="sidebar-icon fa fa-users"></span>
              <span class="sidebar-text">Korisnici</span>
+             <span class="submenu-arrow fa fa-angle-down"></span>
          </a>
          <ul id="submenu4" class="sidebar-submenu">
              <li><a href="{{ route('korisnici.create') }}" class="sidebar-link">Unos</a></li>

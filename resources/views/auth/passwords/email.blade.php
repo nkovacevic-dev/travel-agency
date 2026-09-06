@@ -26,7 +26,7 @@
                 <label for="email" class="form-label">{{ __('Email adresa') }}</label>
                 <input id="email" type="email"
                        class="form-control @error('email') is-invalid @enderror"
-                       name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                       name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
 
                 @error('email')
                     <small class="invalid-feedback d-block">{{ $message }}</small>

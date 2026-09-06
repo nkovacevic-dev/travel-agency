@@ -17,7 +17,7 @@
                     <x-input-text label="{{ __('Naziv') }}" name="naziv" :value="$hotel->naziv ?? old('naziv')" :required="true" />
                 </div>
                 <div class="col-md-3">
-                    <x-input-text label="{{ __('Broj zvezdica') }}" name="broj_zvezdica" type="number" min="1" max="5" :value="$hotel->broj_zvezdica ?? old('broj_zvezdica')" :required="true" />
+                    <x-input-text label="{{ __('Broj zvezdica') }}" name="broj_zvezdica" type="number" min="1" max="5" :value="$hotel->broj_zvezdica ?? old('broj_zvezdica')" />
                 </div>
                 <div class="col-md-3">
                     <x-input-select label="{{ __('Država') }}" name="id_drzave" :items="$drzave" :value="$hotel->id_drzave ?? old('id_drzave')" :emptyOption="true" :required="true"/>

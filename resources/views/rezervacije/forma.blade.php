@@ -70,7 +70,7 @@
 
             @if(isset($rezervacija->id))
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-select">

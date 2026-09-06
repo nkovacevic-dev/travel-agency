@@ -1,5 +1,5 @@
 <div class="btn-group" role="group">
-    <a href="{{ route('putovanja.show', $id) }}" class="btn btn-sm" title="Prikaži" target="_blank">
+    <a href="{{ route('putovanja.show', $id) }}" class="btn btn-sm" title="Prikaži">
         <i class="fa fa-eye"></i>
     </a>
     <a href="{{ route('putovanja.edit', $id) }}" class="btn btn-sm" title="Izmeni">

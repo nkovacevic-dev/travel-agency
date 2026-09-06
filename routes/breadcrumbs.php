@@ -42,7 +42,6 @@ Breadcrumbs::for('hoteli.edit', function ($trail, $id) {
     $trail->push(__('Izmena'), route('hoteli.edit', $id));
 });
 
-// Rezervacije
 Breadcrumbs::for('rezervacije.index', function ($trail) {
     $trail->parent('pocetna');
     $trail->push(__('Rezervacije'), route('rezervacije.index'));

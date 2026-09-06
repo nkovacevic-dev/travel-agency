@@ -7,7 +7,7 @@
              <div class="logo-placeholder">
                 <img src="/images/logo.png" alt="Logo" class="logo-auth">
             </div>
-            <h3>{{ __('Reset Password') }}</h3>
+            <h3>{{ __('Reset lozinke') }}</h3>
             <p class="text-muted">
                 {{ __('Unesite svoju novu lozinku kako biste resetovali postojeću.') }}
             </p>
@@ -18,7 +18,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
 
             <div class="mb-3">
-                <label class="form-label">{{ __('Elektronska pošta') }}</label>
+                <label class="form-label">{{ __('Email adresa') }}</label>
                 <input id="email" type="email"
                        class="form-control @error('email') is-invalid @enderror"
                        name="email" value="{{ $email ?? old('email') }}"
@@ -32,7 +32,7 @@
                 <label class="form-label">{{ __('Nova lozinka') }}</label>
                 <input id="password" type="password"
                        class="form-control @error('password') is-invalid @enderror"
-                       name="password" required autocomplete="new-password">
+                       name="password" autocomplete="new-password">
                 @error('password')
                 <small class="invalid-feedback d-block">{{ $message }}</small>
                 @enderror
@@ -42,11 +42,11 @@
                 <label class="form-label">{{ __('Potvrdi lozinku') }}</label>
                 <input id="password-confirm" type="password"
                        class="form-control"
-                       name="password_confirmation" required autocomplete="new-password">
+                       name="password_confirmation" autocomplete="new-password">
             </div>
 
-            <button class="w-100 btn btn-primary" type="submit">
-                {{ __('Reset Password') }}
+            <button class="w-100 btn button-primary" type="submit">
+                {{ __('Reset lozinke') }}
             </button>
         </form>
 

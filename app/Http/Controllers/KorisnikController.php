@@ -59,7 +59,7 @@ class KorisnikController extends Controller
     public function show(string $id)
     {
         $korisnik = Korisnik::findOrFail($id);
-        return view('korisnik.show', compact('korisnik'));
+        return view('korisnik.prikaz', compact('korisnik'));
     }
 
     public function edit(string $id)
@@ -97,6 +97,14 @@ class KorisnikController extends Controller
     {
         try {
             $korisnik = Korisnik::findOrFail($id);
+
+            if (Auth::id() === $korisnik->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Nije moguće obrisati trenutno prijavljeni nalog.',
+                ], 422);
+            }
+
             $korisnik->delete();
             return response()->json(['success' => true, 'message' => 'Korisnik je uspešno obrisan!']);
         } catch (\Exception $e) {

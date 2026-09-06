@@ -20,6 +20,18 @@ class ResetPasswordController extends Controller
 
     use ResetsPasswords;
 
+    protected function validationErrorMessages()
+    {
+        return [
+            'email.required' => 'Email adresa je obavezna.',
+            'email.email' => 'Unesite ispravnu email adresu.',
+            'password.required' => 'Nova lozinka je obavezna.',
+            'password.confirmed' => 'Lozinke se ne podudaraju.',
+            'password.min' => 'Lozinka mora imati najmanje 8 karaktera.',
+            'token.required' => 'Token je obavezan.',
+        ];
+    }
+
     /**
      * Where to redirect users after resetting their password.
      *

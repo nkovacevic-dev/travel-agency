@@ -22,7 +22,7 @@
                 <label for="name" class="form-label">{{ __('Ime i prezime') }}</label>
                 <input id="name" type="text"
                        class="form-control @error('name') is-invalid @enderror"
-                       name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                       name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                 @error('name')
                     <small class="invalid-feedback d-block">{{ $message }}</small>
                 @enderror
@@ -32,7 +32,7 @@
                 <label for="email" class="form-label">{{ __('Email adresa') }}</label>
                 <input id="email" type="email"
                        class="form-control @error('email') is-invalid @enderror"
-                       name="email" value="{{ old('email') }}" required autocomplete="email">
+                       name="email" value="{{ old('email') }}" autocomplete="email">
                 @error('email')
                     <small class="invalid-feedback d-block">{{ $message }}</small>
                 @enderror
@@ -42,7 +42,7 @@
                 <label for="password" class="form-label">{{ __('Šifra') }}</label>
                 <input id="password" type="password"
                        class="form-control @error('password') is-invalid @enderror"
-                       name="password" required autocomplete="new-password">
+                       name="password" autocomplete="new-password">
                 @error('password')
                     <small class="invalid-feedback d-block">{{ $message }}</small>
                 @enderror
@@ -52,7 +52,7 @@
                 <label for="password-confirm" class="form-label">{{ __('Potvrdi šifru') }}</label>
                 <input id="password-confirm" type="password"
                        class="form-control"
-                       name="password_confirmation" required autocomplete="new-password">
+                       name="password_confirmation" autocomplete="new-password">
             </div>
 
             <button type="submit" class="w-100 btn btn-primary">

@@ -10,6 +10,14 @@ class ForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
 
+    protected function validateEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email'], [
+            'email.required' => 'Email adresa je obavezna.',
+            'email.email' => 'Unesite ispravnu email adresu.',
+        ]);
+    }
+
     protected function sendResetLinkResponse(Request $request, $response)
     {
         return back()->with('status', __('Poslali smo vam link za reset lozinke na email.'));
