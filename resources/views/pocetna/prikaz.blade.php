@@ -106,7 +106,7 @@
                         />
 
                         <x-input-text name="puno_ime" label="Ime i prezime" :required="true" />
-                        <x-input-text name="email" label="Email adresa" :required="true" />
+                        <x-input-text name="email" label="Elektronska pošta" :required="true" />
                         <x-input-text name="telefon" label="Telefon" :required="true" />
 
                         <div class="row">

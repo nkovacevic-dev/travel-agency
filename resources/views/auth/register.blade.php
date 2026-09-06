@@ -29,7 +29,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">{{ __('Email adresa') }}</label>
+                <label for="email" class="form-label">{{ __('Elektronska pošta') }}</label>
                 <input id="email" type="email"
                        class="form-control @error('email') is-invalid @enderror"
                        name="email" value="{{ old('email') }}" autocomplete="email">

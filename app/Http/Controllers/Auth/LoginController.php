@@ -26,7 +26,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ], [
             $this->username() . '.required' => __('Polje elektronska pošta je obavezno.'),
-            $this->username() . '.string'   => __('Email adresa mora biti tekst.'),
+            $this->username() . '.string'   => __('Elektronska pošta mora biti tekst.'),
             'password.required'             => __('Polje šifra je obavezno.'),
             'password.string'               => __('Šifra mora biti tekst.'),
         ]);

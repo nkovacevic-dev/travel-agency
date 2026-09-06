@@ -28,7 +28,7 @@ class StoreKontaktRequest extends FormRequest
             'ime.max'         => 'Ime i prezime ne sme biti duže od 100 karaktera.',
             'email.required'  => 'Polje email adresa je obavezno.',
             'email.email'     => 'Unesite ispravnu email adresu.',
-            'email.max'       => 'Email adresa ne sme biti duža od 150 karaktera.',
+            'email.max'       => 'Elektronska pošta ne sme biti duža od 150 karaktera.',
             'telefon.max'     => 'Broj telefona ne sme biti duži od 30 karaktera.',
             'poruka.required' => 'Polje poruka je obavezno.',
             'poruka.max'      => 'Poruka ne sme biti duža od 2000 karaktera.',

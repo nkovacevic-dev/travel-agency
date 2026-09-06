@@ -27,7 +27,7 @@
                         <div class="col-md-6">
                             <x-input-text
                                 name="email"
-                                label="Email adresa"
+                                label="Elektronska pošta"
                                 placeholder="vas@email.com"
                                 :required="true"
                             />

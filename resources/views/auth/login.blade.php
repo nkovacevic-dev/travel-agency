@@ -17,7 +17,7 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3">
-                <label class="form-label">{{ __('Email adresa') }}</label>
+                <label class="form-label">{{ __('Elektronska pošta') }}</label>
                 <input type="text" id="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', !empty($user)?($user->email ?? $user->name):'') }}" autocomplete="email" autofocus>
                 @error('email')
                 <small class="invalid-feedback d-block">{{$message}}</small>

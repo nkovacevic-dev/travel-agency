@@ -18,7 +18,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
 
             <div class="mb-3">
-                <label class="form-label">{{ __('Email adresa') }}</label>
+                <label class="form-label">{{ __('Elektronska pošta') }}</label>
                 <input id="email" type="email"
                        class="form-control @error('email') is-invalid @enderror"
                        name="email" value="{{ $email ?? old('email') }}"

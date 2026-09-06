@@ -22,4 +22,11 @@ class ForgotPasswordController extends Controller
     {
         return back()->with('status', __('Poslali smo vam link za reset lozinke na email.'));
     }
+
+    protected function sendResetLinkFailedResponse(Request $request, $response)
+    {
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => 'Ne postoji korisnik sa ovom email adresom.']);
+    }
 }
